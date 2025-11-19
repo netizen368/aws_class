@@ -1,0 +1,317 @@
+<h1>글자 정렬</h1>
+<style>
+[class^=align]{ margin: 30px 0;}
+.align-left{
+	text-align: left;
+}
+.align-center{
+	text-align: center;
+}
+.align-right{
+	text-align: right;
+}
+.align-justify{
+	text-align: justify;
+}
+</style>
+<body>
+<h1>text-align 예제</h1>
+<h2>글자 정렬 예제</h2>
+<div class="container">
+	<div class="align-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dolores quisquam repellendus reiciendis possimus ut officia excepturi deleniti nobis atque?</div>
+	<hr>
+	<div class="align-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dolores quisquam repellendus reiciendis possimus ut officia excepturi deleniti nobis atque?</div>
+	<hr>
+	<div class="align-right">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dolores quisquam repellendus reiciendis possimus ut officia excepturi deleniti nobis atque?</div>
+	<hr>
+	<div class="align-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dolores quisquam repellendus reiciendis possimus ut officia excepturi deleniti nobis atque?</div>
+</div>
+<h2>인라인, 인라인 블로 요소 정렬 예제</h2>
+<div class="container">
+	<div class="align-left">
+		<a href="#">링크</a>
+		<span>span</span>
+		<input type="text">
+		<button>버튼</button>
+	</div>
+	<div class="align-center">
+		<a href="#">링크</a>
+		<span>span</span>
+		<input type="text">
+		<button>버튼</button>
+	</div>
+	<div class="align-right">
+		<a href="#">링크</a>
+		<span>span</span>
+		<input type="text">
+		<button>버튼</button>
+	</div>
+	<div class="align-justify">
+		<a href="#">링크</a>
+		<span>span</span>
+		<input type="text">
+		<button>버튼</button>
+	</div>
+</div>
+<h2>블락 요소 정렬 예제</h2>
+<div class="container align-center">
+	안녕하세요.
+</div>
+<div class="container align-center">
+	<div class="box" style="width: 200px; background: yellow;">안녕하세요.</div>
+</div>
+</body>
+
+<h1>영역 속성</h1>
+<style>
+.box{ border: 1px solid black; height: 100px;}
+.box1{ margin: 10px 20px 30px 40px;}
+.box2{ width: 200px; margin: 0 auto;}
+
+.box3,.box4, .box5{ width: 300px; height: 300px;}
+.box4{ padding: 20px}
+.box5{ padding: 20px; box-sizing: border-box;}
+
+.border-container > div{
+	margin-bottom: 10px; height: 100px;
+	border: 3px solid black; 
+	line-height: 100px; text-align: center;
+}
+.border-container > .box6{ 
+	border-top: 1px solid red;
+	border-right: 5px dotted green;
+	border-bottom: 10px dashed blue;
+	border-left: 15px double gray;
+}
+.border-container > .box7{
+	border-color: red green blue gray;
+}
+.border-container > .box8{
+	border-width: 3px 6px 9px 12px;
+	border-width: 3px 6px;
+}
+.border-container > .box9{
+	border-style: solid dashed double none;
+}
+.border-container > .box10{
+	border-radius: 10px;
+}
+.border-container > .box11{
+	border-radius: 50%; width: 200px; height: 200px; line-height: 200px;
+}
+</style>
+<body>
+<h1>영역 속성 예제</h1>
+<h2>margin 예제</h2>
+<div class="container">
+	<div class="box box1"></div>
+	<div class="box box2"></div>
+</div>
+<h2>padding 예제</h2>
+<div class="container">
+	<div class="box box3">
+		width : 300px <br> 
+		height : 300px <br> 
+		box-sizing : container-box <br>
+		padding : 0px <br>
+		실제 요소의 너비 =
+		300px(컨텐츠) <br>
+		+ 왼쪽 테두리(1px) + 오른쪽 테두리(1px) <br>
+		= 302px
+	</div>
+	<div class="box box4">
+		width : 300px <br> 
+		height : 300px <br> 
+		box-sizing : container-box <br>
+		padding : 20px <br>
+		content-box에서 width는 컨텐츠 너비 <br>
+		실제 요소의 너비= <br>
+		300px(컨텐츠) <br>
+		+ 20px(왼쪽패딩) + 20px(오른쪽패딩) <br>
+		+ 1px(왼쪽테두리) + 1px(오른쪽테두리) <br>
+		= 342px
+	</div>
+	<div class="box box5">
+		width : 300px <br> 
+		height : 300px <br> 
+		box-sizing: border-box <br>
+		padding : 20px <br>
+		border-box에서 width는 컨텐츠 + 패딩 + 테두리 너비 <br>
+		실제 컨텐츠의 너비= <br>
+		300px(실제 요소의 너비) <br>
+		- 20px(왼쪽패딩) - 20px(오른쪽패딩) <br>
+		- 1px(왼쪽테두리) - 1px(오른쪽테두리) <br>
+		= 258px 
+	</div>
+</div>
+<h2>border 예제</h2>
+<div class="border-container">
+	<div class="box6">border</div>
+	<div class="box7">border-color</div>
+	<div class="box8">border-width</div>
+	<div class="box9">border-style</div>
+	<div class="box10">border-radious1</div>
+	<div class="box11">border-radious2</div>
+</div>
+</body>
+
+<h1>배경 속성</h1>
+<style>
+	.box{
+		width: 200px; height: 200px; box-sizing: border-box;
+		padding: 20px; border: 10px solid transparent;
+		background-color: yellow; margin-bottom: 20px;
+	}
+	.clip1{ background-clip: border-box;}
+	.clip2{background-clip: padding-box;}
+	.clip3{background-clip: content-box;}
+
+	.bg-img{
+		background-image: url(../../../static/img/고양이.jpg);
+		background-repeat: no-repeat;
+	}
+	.bg1{background-position: center;}
+	.bg2{background-position: 50px 50px;}
+	.bg3{background-position: -50px -50px;}
+
+	.origin1{background-origin: border-box;}
+	.origin2{background-origin: content-box;}
+
+	.size1{background-size: 100px 100px;}
+	.size2{background-size: 50% 50%;}
+	.size3{background-size: cover;}
+	.size4{background-size: contain;}
+
+	[class*=repeat]{background-size: 25% 25%;}
+	.repeat{background-repeat: repeat;}
+	.repeat-x{background-repeat: repeat-x;}
+	.repeat-y{background-repeat: repeat-y;}
+	.no-repeat{background-repeat: no-repeat;}
+
+	.box2{ width: 500px; height: 500px; margin-bottom: 10px; background-size: 100% 100%;}
+	.attachment1{background-attachment: fixed;}
+</style>
+<body>
+<h1>배경 속성 예제</h1>
+<h2>clip</h2>
+<div class="container">
+	<div class="box clip1">clip : border-box</div>
+	<div class="box clip2">clip : padding-box</div>
+	<div class="box clip3">clip : content-box</div>
+</div>
+<h2>배경 이미지</h2>
+<h3>background-position 예제</h3>
+<div class="container">
+	<div class="box bg-img"></div>
+	<div class="box bg-img bg1">background-position : center center</div>
+	<div class="box bg-img bg2">background-position : 50px 50px</div>
+	<div class="box bg-img bg3">background-position : -50px -50px</div>
+</div>
+<h3>background-origin 예제</h3>
+<div class="container">
+	<div class="box bg-img">background-origin : padding-box</div>
+	<div class="box bg-img origin1">background-origin : border-box</div>
+	<div class="box bg-img origin2">background-origin : content-box</div>
+</div>
+<h3>background-size 예제</h3>
+<div class="container">
+	<div class="box bg-img">background-size : auto</div>
+	<div class="box bg-img size1">background-size : 100px 100px</div>
+	<div class="box bg-img size2">background-size : 50% 50%</div>
+	<div class="box bg-img size3">background-size : cover</div>
+	<div class="box bg-img size4">background-size : contain</div>
+</div>
+<h3>background-repeat</h3>
+<div class="container">
+	<div class="box bg-img repeat">repeat</div>
+	<div class="box bg-img repeat-x">repeat-x</div>
+	<div class="box bg-img repeat-y">repeat-y</div>
+	<div class="box bg-img no-repeat">no-repeat</div>
+</div>
+<h3>background-attachment</h3>
+<div class="container">
+	<div class="bg-img box2">background-attachment : scroll</div>
+	<div class="bg-img box2 attachment1">background-attachment : fixed</div>
+</div>
+</body>
+
+<h1>목록 속성</h1>
+<style>
+ul, ol{background-color: pink;}
+li{background-color: yellow;}
+.list1{ 
+	/* list-style-type: circle;
+	list-style-position: inside; */
+	list-style: circle inside;
+}
+.list2{ 
+	list-style-type: decimal-leading-zero;
+	list-style-position: outside;
+}
+.list3{
+	list-style-image: url(../../../static/img/마커.png);
+	list-style-position: inside;
+	}
+</style>
+<body>
+<h1>목록 속성 예제</h1>
+<ul class="list1">
+	<li>사과</li>
+	<li>포도</li>
+	<li>바나나</li>
+</ul>
+
+<ol class="list2">
+	<li>등원</li>
+	<li>수업</li>
+	<li>점심</li>
+</ol>
+
+<ul class="list3">
+	<li>사과</li>
+	<li>포도</li>
+	<li>바나나</li>
+</ul>
+</body>
+
+<h1>float 속성</h1>
+<style>
+.box{
+	height: 100px; background: yellow; width: 150px;
+	border: 1px solid black;
+}
+.float-left{float: left;}
+.float-right{float: right;height: 400px;}
+.clearfix::after{
+	content: ''; display: block; clear: both;
+}
+.container{margin-bottom: 20px;}
+</style>
+<body>
+<h1>float 속성 예제</h1>
+<h2>clear 적용</h2>
+<div class="container">
+	<div class="inner-box clearfix">
+		<div class="box float-left">float : left 1</div>
+		<div class="box float-right">float : right</div>
+		<div class="box float-left">float : left 2</div>
+	</div>
+	<div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi, rem? Quae, incidunt aliquid. Ut, laudantium repellendus modi hic nihil praesentium!</div>
+</div>
+<h2>clear 미적용</h2>
+<div class="container">
+	<div class="inner-box">
+		<div class="box float-left">float : left 1</div>
+		<div class="box float-right">float : right</div>
+		<div class="box float-left">float : left 2</div>
+	</div>
+	<div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi, rem? Quae, incidunt aliquid. Ut, laudantium repellendus modi hic nihil praesentium!</div>
+</div>
+</body>
+
+<h1></h1>
+
+
+
+
+
