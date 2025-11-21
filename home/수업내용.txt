@@ -618,6 +618,20 @@ br
  X : x축 방향으로 비틈(가로방향)
  Y : y축 방향으로 비틈(세로방향)
  없음 : x,y축 방향으로 비틈
+
+ 5. transform-origin
+ transform을 이용해서 요소를 변경시킬 때 기준점을 설정
+ 기본값 : center center 
+ 
+ 6. transform-style
+ 여러가지 변형을 동시에 하는 경우 부모 요소에 적용한 3d를 하위 요소에 적용하는 속성
+ 값
+ flat : 하위 요소를 평면으로 처리
+ preseve-3d : 하위 요소에 3d효과를 적용
+
+<transition 속성>
+<애니메이션 속성>
+<overflow 속성>
  
 
 
