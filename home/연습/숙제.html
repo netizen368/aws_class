@@ -48,7 +48,10 @@
 		.text1{background: red;}
 		.text2{background: blue;}
 	</style> -->
-	<style>
+	<!-- <style>
+		body{
+			background: yellow;
+		}
 		.container{
 			width: 150px;
 			border: 1px solid none;
@@ -65,6 +68,7 @@
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-origin: border-box;
+			z-index: 1;
 		}
 		.img:hover{
 			transform: scale(103%);
@@ -80,12 +84,63 @@
 			text-align: center;
 			font-size: calc(25%);
 			position: fixed calc(10%);
+			float: left;
+		}
+		.text1{
+			z-index:2;
+		}
+		.text2{
+			z-index: 3; margin-top: -2px;
+		}
+
+	</style> -->
+	<style>
+		body{
+			background: yellow;
+		}
+		.container{
+			width: 150px;
+			border: 1px solid none;
+			box-sizing: border-box;
+			overflow: hidden;
+		}
+		.size{
+			width: 150px; height: 200px;
+			overflow: hidden;
+		}
+		.img{
+			height: 200px;
+			background-image: url(../../static/img/OIP.jpg);
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-origin: border-box;
+			z-index: 1;
+		}
+		.img:hover{
+			transform: scale(103%);
+		}
+		.box{
+			height: 12px;
+			background: green;
+			text-overflow: clip;
+			overflow: hidden;
+			text-align: center;
+			font-size: calc(12%);
+			position: fixed calc(10%);
+		}
+		.text1{
+			z-index:5; 
+		}
+		.text2{
+			z-index: 3; margin-top: -2px; 
 		}
 
 	</style>
 </head>
 <body >
-	<div class="container">
+	<!-- 
+		연습1
+		<div class="container">
 		<div class="size">
 			<div class="img"></div>	
 		</div>
@@ -93,6 +148,16 @@
 			<div class="text1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, nihil.</div>
 			<div class="text2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, nihil.</div>
 		</div>
-	</div>
+	</div> -->
+	<!-- 
+		연습2
+		<div class="container">
+		<div class="size">
+			<div class="img"></div>	
+		</div>
+		<div class="box text1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, nihil.</div>
+		<div class="box text2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, nihil.</div>
+		
+	</div> -->
 </body>
 </html>
