@@ -580,7 +580,7 @@ br
  이전에 사용했던 함수들
  calc(), rgb(), rgba(), url()
  
- 공통 설명(교재 p.174)
+ 공통 설명
  Z축 관련한 효과를 보려면 perstpective 속성을 부모 요소에 적용해야함.
  
  1. translate?
@@ -630,9 +630,136 @@ br
  preseve-3d : 하위 요소에 3d효과를 적용
 
 <transition 속성>
-<애니메이션 속성>
-<overflow 속성>
+ transition
+ 요소의 스타일이 변경되는 걸 감지해서 서서히 변하도록 해줌
+ 애니메이션 효과를 줌
+ 단축 속성
+ property duration timing-function delay를 한번에 사용
  
+ transition-property
+ 변화를 감지할 속성
+ 값
+ all : 모든 속성
+ none : 아무 속성도 감지하지 않음
+ 속성명 :  해당 속성만 감지. 여러개 속성인 경우 ,로 구분
+ 
+ transition-duration
+ 변화가 지속되는 시간
+ ms, s
+ 여러 속성인 경우 ,로 구분
+ 
+ transition-timing-function
+ 트렌지션이 진행되는 구간별 시간을 지정하는 속성
+ 값
+ linear : 일정한 속도
+ ease, ease-in, ease-out, ease-in-out : 지정된 값
+ cubic-bezier(n,n,n,n) : 각 구간별로 속도를 지정.
+ 
+ transition-delay
+ -트랜지션이 두개 이상 있는 경우 하나의 트랜지션이 끝나고 다음 트랜지션이 시작되는 시간
+ -ms, s
 
+<애니메이션 속성>
+ 애니메이션 적용 방법
+ 1. 애니메이션을 등록
+ 2. 등록된 애니메이션을 적용
+ 
+ 애니메이션 등록
+ @keyframes 애니메이션명{
+ 지점1{
+ 속성명 : 값;
+ 속성명 : 값
+ }
+ 지점2{
+ 속성명 : 값;
+ 속성명 : 값
+ }
+ ...
+ }
+ 지점은 0~100%. 0%는 from, 100%는 to로 쓸 수 있음
+ 
+ 애니메이션 적용 방법
+ 애니메이션 관련 속성의 값들을 이용
+ 
+ animation-name
+ 적용할 애니메이션 이름(등록된 애니메이션 중 선택)
+ 
+ animation-duration
+ 애니메이션 적용되는 시간
+ 
+ animation-direction
+ 애니메이션을 반복할 때 진행 방향을 설정
+ 값
+ normal : 기본, 처음부터
+ alternate : 역순
+ 
+ animation-inerator-count
+ 반복 횟수
+ 값
+ 숫자 : 숫자만큼 반복
+ infinite : 무한 반복
+ 
+ animation-timing-function
+ 애니메이션 수행 속도, transition-timing-function 참고
+ 
+ animation-fill-mode
+ 애니메이션 끝난 후 또는 시작 전의 상태를 지정
+ 값
+ none : 아무것도 적용하지 않음
+ forward : 애니메이션이 끝난 후 키프레임 스타일을 유지(마지막 장면 유지)
+ backward : 애니메이션이 시작하기 전 첫번째 키프레임 스타일을 유지(첫 장면 유지)
+ both : 애니메이션이 시작하기전에는 첫번째 키프레임 스타일을, 끝난 후에슨 마지막
+ 키프레임 스타일을 유지
+ 
+ animation-delay
+ 애니메이션 시작 전 딜레이 시간
+ 
+ animation
+ name duration timing-function direction inerator-count fill-mode를 
+ 한번에 적용하는 단축 속성
+ 
+ animation-paly-state
+ 애니메이션 재생 여부
+ hover와 같이 특정 상황에서 일시정지 시킬때 사용
+ 값
+ running : 기본값, 재생
+ paused : 일시정지
 
+<overflow 속성>
+ overflow
+ 요소 안에 있는 컨텐츠(자손 요소들)가 요소 크기를 벗어났을 때 처리 방법을 설정
+ 값
+ visible : 넘어가는 부분을 보여줌. 기본값
+ auto : 범위를 넘어가면 scroll, 없으면 hidden
+ scroll : 스크롤을 추가해서 넘어가는 범위를 보게 함. 스크롤 반드시 추가
+ hidden : 넘어가는 부분을 감춤
 
+ 접두어
+ webkit : 크롬, 사파리
+ moz- : 파이어폭스
+ ms- : 익스플로러, 엣지(구버전)
+ o- : 오페라
+
+<반응형 적용하기>
+ 반응형
+ 웹을 보는 장치에 따라 보이는 화면이 다른 경우
+ 예로 m.naver.com
+ 
+ 반응형 적용 방법
+ 1. style 태그 안(css 파일 안)에 @media 쿼리를 이용
+ 2. style 태그에 media 속성을 이용
+ 3. link 태그에 media 속성을 이용
+ 
+ min-width/min-height
+ 최소 너비/높이
+ 
+ max-width/max-height
+ 최대 너비/높이
+ 
+ 부트스트랩에서 사용하는 반응형 기준
+ xs : w < 576px(모바일)
+ sm : w >= 576px(모바일 큰화면)
+ md : w >= 768px(태블릿)
+ lg : w >= 992px(작은 pc화면)
+ xl : w >= 1200px(큰 pc화면)
+ xxl : w >= 1400px(초대형 화면)
