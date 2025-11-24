@@ -1420,14 +1420,367 @@
 </body>
 
 <h1>transform 속성</h1>
-
+transform? 예제
+<style>
+	.box{
+		width: 200px;
+		height: 100px;
+		border: 3px solid black;
+		margin-bottom: 50px;
+		background: yellow;
+	}
+	.container{
+		/* z축 관련 효과를 제대로 적용하기 위해 */
+		perspective: 500px;
+		margin-bottom: 150px;
+	}
+	.t1{transform: translateX(50%);}
+	.t2{transform: translateY(30px);}
+	.t3{transform: translate(50px, 30px);}
+	.t4{transform: translateZ(100px);}
+	.t5{transform: translate3d(50px, 30px, 100px);}
+</style>
+<body>
+	<div class="container">
+		<div class="box t1">translateX</div>
+		<div class="box t2">translateY</div>
+		<div class="box t3">translate</div>
+		<div class="box t4">translateZ</div>
+		<div class="box t5">translate3d</div>
+	</div>
+</body>
+scale? 예제
+<style>
+	.sc1{ transform: scaleX(2);}
+	.sc2{ transform: scaleY(1.3);}
+	.sc3{ transform: scale(2, 1.3);}
+	/* z축 두께가 0이기 때문에 효과가 거의 없음, 회전과 함께 사용해야 의미가 있음 */
+	.sc4{ transform: scaleZ(10);}
+	.sc5{ transform: scale3d(2, 1.3, 10);}
+</style>
+<body>
+	<div class="container">
+		<div class="box sc1">scaleX</div>
+		<div class="box sc2">scaleY</div>
+		<div class="box sc3">scale</div>
+		<div class="box sc4">scaleZ</div>
+		<div class="box sc5">scale3d</div>
+	</div>
+</body>
+roate? 예제
+<style>
+	.r1{ transform: rotateX(45deg);}
+	.r2{ transform: rotateY(45deg);}
+	.r3{ transform: rotate(45deg, 45deg);}
+	.r3{ transform: rotate(45deg);}
+	.r4{ transform: rotateZ(45deg);}
+	.r5{ transform: rotate3d(1, 0, 0, 45deg);}
+</style>
+<body>
+	<div class="container">
+		<div class="box r1">roateX</div>
+		<div class="box r2">roateY</div>
+		<div class="box r3">roate</div>
+		<div class="box r4">roateZ</div>
+		<div class="box r5">roate3d</div>
+	</div>
+</body>
+skew? 예제
+<style>
+	.sk1{ transform: skewX(30deg);}
+	.sk2{ 
+		transform: skewX(-15deg);
+		width: 1px; border: 0; height: 16px; background: red;
+	}
+</style>
+<body>
+	<div class="container">
+		<div class="box sk1">skewX</div>
+		<div class="box sk2"></div>
+	</div>
+</body>
+transform-origin 예제
+<style>
+	.origin1{ transform-origin: center center; transform: rotate(30deg);}
+	.origin2{ transform-origin: 0 0 ; transform: rotate(45deg);}
+</style>
+<body>
+	<div class="container">
+		<div class="box origin1">중심기준 회전</div>
+		<div class="box origin2">왼쪽위(0,0) 기준 회전</div>
+	</div>
+</body>
+transform-style 예제
+<style>
+	.c1{perspective: none;}
+	.flat-container,
+	.preseve-container{
+		display: inline-block;
+		border: 10px solid black;
+		transform: perspective(500px) rotateY(-60deg);
+	}
+	.box1{
+		width: 100px; height: 100px; background: yellow;
+		transform: perspective(500px) rotateY(60deg); 
+	}
+	.flat-container{transform-style: flat;}
+	.preseve-container{ transform-style: preserve-3d;}
+</style>
+<body>
+	<div class="container c1">
+		<div class="flat-container">
+			<div class="box1"></div>
+		</div>
+		<div class="preseve-container">
+			<div class="box1"></div>
+		</div>
+	</div>
+</body>
 
 <h1>transition 속성</h1>
+<style>
+	.box{
+		/* 박스 크기 설정 */
+		width: 100px; height: 100px;
+		/* 테두리 배경 설정 */
+		border: 3px solid black; background: yellow;
+		/* 폰트 설정 */
+		font-weight: bold; font-size: 20px;
+		/* 글자 가운데 배치 */
+		text-align: center; line-height: 100px;
+
+		transition-property: font-size, background; 
+		transition-duration: 500ms, 2000ms;
+		transition-delay: 1s, 2s;
+	}
+	.box:hover{font-size: 60px; background: gray;}
+	
+	.box1{
+		width: 100px; height: 100px; background: yellow;
+		margin-bottom: 20px; position: relative;
+		transition: left 5s;
+		left: 0;
+	}
+	.c2:hover .box1{
+		left: calc(100vw - 100px);
+	}
+	.linear{transition-timing-function: linear;}
+	.ease{transition-timing-function: ease;}
+	.ease-in{transition-timing-function: ease-in;}
+	.ease-in-out{transition-timing-function: ease-in-out;}
+</style>
+<body>
+	<h1>transition 속성 예제</h1>
+	<div class="container">
+		<div class="box">꽝</div>
+	</div>
+	<h2>timing-function 예제</h2>
+	<div class="contianer c2">
+		<div class="box1 linear"></div>
+		<div class="box1 ease"></div>
+		<div class="box1 ease-in"></div>
+		<div class="box1 ease-in-out"></div>
+	</div>
+</body>
+
 <h1>애니메이션 속성</h1>
+<style>
+	.box{
+		/* 박스 크기 */
+		width: 100px; height: 100px;
+		/* 배경, 테두리 */
+		background: yellow; border: 3px solid black;
+		/* 글자 가운데 */
+		line-height: 100px; text-align: center;
+		
+		/* 적용할 애니메이션 정보 */
+		animation-name: fontSizeUp;
+		animation-delay: 50ms;
+		animation-duration: 3s;
+		animation-direction: alternate;
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
+
+		animation: fontSizeUp	3s 500ms infinite alternate forwards;
+	}
+	@keyframes fontSizeUp {
+		from{
+			font-size: 20px;
+		}
+		to{
+			font-size: 60px;
+		}
+	}
+</style>
+<body>
+	<h1>애니메이션 예제</h1>
+	<div class="container">
+		<div class="box">꽝</div>
+	</div>
+</body>
+
 <h1>overflow 속성</h1>
+<style>
+	.box{
+		width: 400px; height: 50px; border: 1px solid black;
+		margin-bottom: 50px;
+	}	
+	.box1{ overflow: visible;}
+	.box2{ overflow: auto;}
+	.box3{ overflow: auto;}
+	.box4{ overflow: scroll;}
+	.box5{ overflow: scroll;}
+	.box6{ overflow: hidden;}
+
+	.box7{ 
+		font-size: 40px; height: 200px;
+		overflow: auto;
+		/* 스크롤바 감추기 */
+		scrollbar-width: none;
+	}
+	/* 스크롤바 감추기 */
+	.box7::-webkit-scrollbar{
+		display: none;
+	}
+</style>
+<body>
+	<h1>overflow 속성 예제</h1>
+	<div class="container">
+		<div class="box box1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, modi placeat! Minus unde at officiis aut voluptas ducimus doloribus rem.</div>
+		<div class="box box2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, modi placeat! Minus unde at officiis aut voluptas ducimus doloribus rem.</div>
+		<div class="box box3">Lorem ipsum</div>
+		<div class="box box4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, modi placeat! Minus unde at officiis aut voluptas ducimus doloribus rem.</div>
+		<div class="box box5">Lorem ipsum</div>
+		<div class="box box6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, modi placeat! Minus unde at officiis aut voluptas ducimus doloribus rem.</div>
+		<div class="box box7">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, modi placeat! Minus unde at officiis aut voluptas ducimus doloribus rem.</div>
+	</div>
+</body>
+
 <h1>반응형 적용하기</h1>
+<!-- 방법1 -->
+	<style>
+	.box{
+		height: 100px; border: 1px solid black;
+		float: left;
+		box-sizing: border-box;
+	}
+	@media screen and (max-width : 575px){
+		/* xs 사이즈 */
+		.box{
+			width: 100%;
+		}
+	}
+	/* sm 사이즈 이상이면(sm, md) */
+	@media screen and (min-width : 576px) and (max-width: 992px){
+		.box{
+			width: 50%;
+		}
+	}
+	/* lg, xl 사이즈이면 */
+	@media screen and (min-width : 992px) and (max-width: 1400px){
+		.box{
+			width: 33.33%;
+		}
+	}
+	/* xxl 사이즈 이상이면 */
+	@media screen and (min-width : 1400px){
+		.box{
+			width: 25%;
+		}
+	}
+</style>
+
+<!-- 방법2 -->
+<!-- 모바일 -->
+<style media="screen and (max-width : 575px)">
+	.box{ font-size: 10px;}
+</style>
+<!-- 태블릿 -->
+<style media="screen and (min-width : 576px) and (max-width: 992px)">
+	.box{ font-size: 20px;}
+</style>
+<!-- PC -->
+<style media="screen and (min-width : 992px) and (max-width: 1400px)">
+	.box{ font-size: 30px;}
+</style>
+<!-- 초대형 화면 -->
+<style media="screen and (min-width : 1400px)">
+	.box{ font-size: 40px;}
+</style>
+<!-- PC이상 화면에서 적용 -->
+<link rel="stylesheet" href="02_반응형 적용하기_PC이상.css"
+	media="screen and (min-width:992px)">
+
+css파일에 적을 것
+
+@charset "utf-8";
+
+.box{
+	color: red; font-weight: bold;
+}
+
+<body>
+	<div class="container">
+		<div class="box">1</div>
+		<div class="box">2</div>
+		<div class="box">3</div>
+		<div class="box">4</div>
+		<div class="box">5</div>
+		<div class="box">6</div>
+	</div>
+</body>
+
 <h1>flex 속성</h1>
+<style>
+	.container{
+		display: flex; 
+		flex-direction: row;
+		flex-wrap: wrap;
+		flex-flow: row nowrap;
+		justify-content: space-evenly;
+
+		align-items: start;
+		/* align-content: space-between; */
+		/* 결과를 잘 확인하기 위한 기초 작업 */
+		background: yellow; padding: 0px; border: 3px solid black;
+		height: 500px;
+	}
+	.box{border: 5px solid blue;
+		width: 150px; 
+		/* height: 50px; */
+		background: red;
+		flex-grow: 1;
+	}
+	.container div:last-of-type{
+		/* align-self: flex-end;  */
+		flex-grow: 3;
+	}
+	/* 박스 사이의 테두리를 겹치게 함 */
+	.box+.box{ margin-left: -5px;}
+	/* .container div:nth-of-type(2){width: 200%;} */
+</style>
+<body>
+	<div class="container">
+		<div class="box">1</div>
+		<div class="box">2</div>
+		<div class="box">3</div>
+		<div class="box">4</div>
+		<div class="box">5</div>
+	</div>
+</body>
+
 <h1>아이콘</h1>
+<script src="//kit.fontawesome.com/kit번호.js" crossorigin="anonymous"></script>
+<style>
+	.fa-bars{color: red; font-size: 50px;}
+</style>
+<body>
+	<h3>fontawesome에서 발급받은 kit를 입력해야 아이콘이 보임</h3>
+	<i class="fa-solid fa-bars"></i>
+</body>
+
 <h1>부트스트랩</h1>
+
+
 
 
