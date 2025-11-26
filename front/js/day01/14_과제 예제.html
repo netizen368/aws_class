@@ -17,15 +17,16 @@
 		let num = prompt("정수 입력");
 		num = parseInt(num);
 		if(num % 6 == 0){
-			document.write(`${num}는 6의 배수입니다.`);
-		}else if(num % 2 == 0){
-			document.write(`${num}는 2의 배수입니다.`);
-		}else if(num % 3 == 0){
-			document.write(`${num}는 3의 배수입니다.`);
-		}else{
+				document.write(`${num}는 6의 배수입니다.`);
+			}else if(num % 2 == 0){
+				document.write(`${num}는 2의 배수입니다.`);
+			}else if(num % 3 == 0){
+				document.write(`${num}는 3의 배수입니다.`);
+		}
+		else{
 			document.write(`${num}는 2,3,6의 배수가 아닙니다.`);
 		}
-		document.write(`<hr>`);
+
 		/* 
 		점수를 입력받아(prompt) 입력받은 점수가 소수인지 아닌지 알림(alert)으로 알려주는 코드를 작성.
 		소수 : 약수가 1과 자기자신인 수 => 약수가 2개
@@ -37,8 +38,9 @@
 		- 조건식 : i가 num까지 => i가 num보다 작거나 같다
 		- 증감식 : i는 1씩 증가
 		규칙성 : i가 num의 약수이면 약수의 개수를 1증가
-			=> 약수를 어떻게 풀어쓸건가?
+			=> nam를 i로 나누었을 때 나머지가 0이면 count를 1증가
 		반복문 종료 후 : 약수의 개수가 2개이면 소수라고 출력, 아니면 소수가 아님이라고 출력
+			=> count가 2와 같으면 소수라고 출력, 아니면 소수가 아님이라고 출력
 		*/
 		document.write('<h1>약수 예제</h1>');
 		let count = 0
@@ -48,6 +50,7 @@
 		}
 		if(count == 2){alert(`${num}은 소수입니다.`);}
 		else{alert(`${num}은 정수입니다.`);}
+
 		/* 
 		A의 배수 : 어떤 수를 A로 나누었을 때 나머지가 0인 수
 			- 12의 배수 : 12, 24, 36, ...
