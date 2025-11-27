@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>style 활용하기</title>
+</head>
+<body>
+	<button id="btn1">배경색 변경</button>
+	<hr>
+	<div id="box1"></div>
+	<script>
+		//버튼을 클릭하면 배경색이 yellow => red => blue => green => yellow
+		const box1 = document.querySelector("#box1");
+		const btn1 = document.querySelector("#btn1");
+
+		box1.style.border = "5px solid black";
+		box1.style.height = "300px";
+
+		let Color =[1, 2, 3, 4, 5,];
+		Color = 1;
+		btn1.addEventListener("click", function(){
+			//배경색상이 빈 문자열이거나 green이면 yellow으로 변경
+			if(Color == 1 || Color == 5){
+				box1.style.backgroundColor = "yellow";
+				Color = 2;
+			}
+			//배경색상이 yellow이면 red
+			else if(Color == 2){
+				box1.style.backgroundColor = "red";
+				Color = 3;
+			}
+			//배경색상이 red이면 blue
+			else if(Color == 3){
+				box1.style.backgroundColor = "blue";
+				Color = 4;
+			}
+			//배경색상이 blue이면 green
+			else if(Color == 4){
+				box1.style.backgroundColor = "green";
+				Color = 5;
+			}
+		})
+		
+	</script>
+</body>
+</html>
