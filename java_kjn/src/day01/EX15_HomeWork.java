@@ -1,5 +1,7 @@
 package day01;
 
+import java.util.Scanner;
+
 public class EX15_HomeWork {
 
 	public static void main(String[] args) {
@@ -13,7 +15,29 @@ public class EX15_HomeWork {
 		 * F : -9 ~ 59
 		 * 잘못된 성적 : -9미만, 110이상
 		 */
-
+		Scanner scan = new Scanner(System.in);
+		// 입력 안내 문구
+		System.out.print("점수 입력 : ");
+		// 정수1를 입력 받음
+		int num = scan.nextInt();
+		// 연산자를 입력 받음(문자)
+		
+		switch(num / 10) {
+		case 9, 10:
+			System.out.println(num + "는 A");
+			break;
+		case 8:
+			System.out.println(num + "는 B");
+			break;
+		case 7:
+			System.out.println(num + "는 C");
+			break;
+		case 6:
+			System.out.println(num + "는 D");
+		case 0, 1, 2 ,3 , 4, 5:
+			System.out.println(num + "는 F");
+		default:
+			System.out.println(num + " 잘못된 성적입니다.");
 	}
 
-}
+	}}
