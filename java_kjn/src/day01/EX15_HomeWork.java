@@ -34,8 +34,10 @@ public class EX15_HomeWork {
 			break;
 		case 6:
 			System.out.println(num + "는 D");
-		case 0, 1, 2 ,3 , 4, 5:
+			break;
+		case 0, 1, 2, 3, 4, 5:
 			System.out.println(num + "는 F");
+			break;
 		default:
 			System.out.println(num + " 잘못된 성적입니다.");
 	}
