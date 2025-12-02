@@ -18,9 +18,9 @@ public class EX15_HomeWork {
 		Scanner scan = new Scanner(System.in);
 		// 입력 안내 문구
 		System.out.print("점수 입력 : ");
-		// 정수1를 입력 받음
+		// 성적을 입력 받음
 		int num = scan.nextInt();
-		// 연산자를 입력 받음(문자)
+		// 성적에 따라 학점을 출력
 		
 		switch(num / 10) {
 		case 9, 10:
