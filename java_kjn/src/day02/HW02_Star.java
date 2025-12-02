@@ -55,22 +55,25 @@ public class HW02_Star {
 		}
 		System.out.println("-----------------------------");
 		/* 문제3
-		 *     *      
-		 *    ***
-		 *   *****
-		 *  *******
-		 * *********
-		 */
+		 *     *     i=1, 공백=4, *=1개
+		 *    ***	 i=2, 공백=4, *=3개
+		 *   *****	 i=3, 공백=4, *=5개
+		 *  *******  i=4, 공백=4, *=7개
+		 * ********* i=5, 공백=4, *=9개
+		 * 						 *=2*n-1개
+		 */						 
 		for(int i = 1; i <= row; i++) {
-			for(int a = 1; a >= i; a--) {
+			for(int a = 5; a >= i; a--) {
 				System.out.print(" ");
 			}
-			for(int j = 1; j <= i; j++) {
-				System.out.print("*");
-			}
+			for(int j = 1; j <= 10	; j++ ) {
+				if(j >= 1) {
+					int num = j + 2;
+					System.out.print("*");
+					continue;
+				}}
 			System.out.println();
-		}
 		
+		}
 	}
-
 }
