@@ -19,8 +19,8 @@ public class HW02_Star {
 				System.out.print("*");
 			}
 			System.out.println();
-		}   
-		ㅇㄻㄴㄹ
+		}
+		System.out.println("-----------------------------");
 		/* 문제1
 		 * *     i=1, *=1개
 		 * **	 i=2, *=2개
@@ -30,6 +30,13 @@ public class HW02_Star {
 		 * 		       *=?
 		 */
 		
+		for(int i = 1; i <= row; i++) {
+			for(int j = 1; j <= i; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+		System.out.println("-----------------------------");
 		/* 문제2
 		 *     * i=1, 공백=4, *=1개
 		 *    ** i=2, 공백=3, *=2개
@@ -37,7 +44,16 @@ public class HW02_Star {
 		 *  **** i=4, 공백=1, *=4개
 		 * ***** i=5, 공백=0, *=5개
 		 */
-		
+		for(int i = 1; i <= row; i++) {
+			for(int a = 5; a >= i; a--) {
+				System.out.print(" ");
+			}
+			for(int j = 1; j <= i; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+		System.out.println("-----------------------------");
 		/* 문제3
 		 *     *      
 		 *    ***
@@ -45,6 +61,15 @@ public class HW02_Star {
 		 *  *******
 		 * *********
 		 */
+		for(int i = 1; i <= row; i++) {
+			for(int a = 1; a >= i; a--) {
+				System.out.print(" ");
+			}
+			for(int j = 1; j <= i; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
 		
 	}
 
