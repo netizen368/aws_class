@@ -14,7 +14,23 @@ public class HW01_LCM {
 		 * 6과 8의 최소공배수 : 24
 		 */
 
+		int num1 = 6;
+		int num2 = 8;
+		int i = num1;
 		
+		for(; i <= 100; i++) {
+			if(i % num1 == 0 && i % num2 == 0) {
+				System.out.println(num1 + "과 " + num2 + "의 공배수 : " + i);
+			}
+		}
+		System.out.println("-------------------------");
+		for(i = num1; i <= 100; i++) {
+			if(i % num1 == 0 && i % num2 == 0) {
+				System.out.println(num1 + "과 " + num2 + "의 최소공배수 : " + i);
+				break;
+			}
+			
+		}
 		
 		
 		

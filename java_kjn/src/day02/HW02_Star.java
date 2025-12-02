@@ -19,8 +19,8 @@ public class HW02_Star {
 				System.out.print("*");
 			}
 			System.out.println();
-		}
-		
+		}   
+		ㅇㄻㄴㄹ
 		/* 문제1
 		 * *     i=1, *=1개
 		 * **	 i=2, *=2개
