@@ -1,6 +1,6 @@
 package day01;
 
-public class Ex13_SwitchTest {
+public class EX13_SwitchTest {
 
 	public static void main(String[] args) {
 		/* 월을 입력받아 입력받은 월의 마지막 일을 출력하는 코드를 작성하세요.
