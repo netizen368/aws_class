@@ -4,7 +4,7 @@ public class Ex06_MultiArray {
 
 	public static void main(String[] args) {
 
-		/* 2차원 배열 p.219
+		/* 2차원 배열 p 126
 		 * - 행렬을 생각하면 됨
 		 * - 행과 열이 있는 배열
 		 * - 자료형 배열명 [][] = new 자료형 [행크기][열크기];
