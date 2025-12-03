@@ -127,3 +127,21 @@ public class HW03_Star {
 		System.out.println("-----------------------------");
 	}
 }
+
+class Car{
+	
+	//멤버변수(필드)
+	int wheelCount;
+	String wheelType;//타이어 종류
+	String color; 
+	String company;
+	String name;
+	String type;
+	boolean power;
+	int speed;
+	char gear;
+	
+	//메서드
+	
+	//생성자
+}
