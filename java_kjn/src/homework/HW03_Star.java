@@ -1,6 +1,6 @@
-package day02;
+package homework;
 
-public class HW02_Star {
+public class HW03_Star {
 
 	public static void main(String[] args) {
 
@@ -61,7 +61,34 @@ public class HW02_Star {
 		 *  *******  i=4, 공백=4, *=7개
 		 * ********* i=5, 공백=4, *=9개
 		 * 						 *=2*n-1개
-		 */						 
+		 */				
+		for(int i = 1; i <= row; i++) {
+			for(int a = 5; a >= i; a--) {
+				System.out.print(" ");
+			}
+			for(int j = 1; j <= i; j++) {
+				System.out.print("*");
+			}
+			for(int j = 0; j < i-1; j++) {
+				System.out.print("*");
+			}
+			
+			System.out.println();
+		}
+		System.out.println("-----------------------------");
+		
+		for(int i = 1; i <= row; i++) {
+			for(int a = 5; a >= i; a--) {
+				System.out.print(" ");
+			}
+			for(int j = 1; j <= 2*i-1; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+		System.out.println("-----------------------------");
+		
+		//숙제 및 사다리꼴
 		for(int i = 1; i <= row; i++) {
 			for(int a = 5; a >= i; a--) {
 				System.out.print(" ");
@@ -73,7 +100,30 @@ public class HW02_Star {
 					continue;
 				}}
 			System.out.println();
-		
 		}
+		System.out.println("-----------------------------");
+		//마름모
+		for(int i = 1; i <= row; i++) {
+			for(int a = 5; a >= i; a--) {
+				System.out.print(" ");
+			}
+			for(int j = 1; j <= 2*i-1; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+		for(int i = 1; i <= row; i++) {
+			for(int j = 1; j <= i+1; j++) {
+				System.out.print(" ");
+			}
+			for(int a = 4; a >= i; a--) {
+				System.out.print("*");
+			}
+			for(int a = 4; a >= i+1; a--) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+		System.out.println("-----------------------------");
 	}
 }

@@ -1,8 +1,8 @@
-package day01;
+package homework;
 
 import java.util.Scanner;
 
-public class EX15_HomeWork {
+public class HW01_Score {
 
 	public static void main(String[] args) {
 		
