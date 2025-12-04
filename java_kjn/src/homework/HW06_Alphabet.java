@@ -14,7 +14,14 @@ public class HW06_Alphabet {
 		 * ...
 		 * abcdefghijk...xyz
 		 */
-
+		
+		for(int i = 1; i <= 26; i++) {
+			for(int j = 1; j <= i; j++) {
+				System.out.print((char)(96 + j));
+			}
+			System.out.println();
+		}
+		
 	}
 
 }
