@@ -19,7 +19,7 @@ public class HW04_UpDownGame {
 		 * 정답입니다.
 		 */
 		
-		int min = 1, max = 10;
+		int min = 1, max = 100;
 		int r = (int)(Math.random() * (max - min + 1) + min);
 		
 		Random random = new Random();
