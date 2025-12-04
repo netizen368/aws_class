@@ -10,7 +10,7 @@ public class Ex03_ConditionalStatement {
 		 *   - 성적에 따라 학점이 달라질 때 
 		 *   - A이면 B이다로 표현 가능하면 조건문을 사용
 		 *   - A : 조건식, B : 실행문
-		 * if문ㄴ
+		 * if문
 		 * - 문법1
 		 *   if(조건식){
 		 *     실행문;
