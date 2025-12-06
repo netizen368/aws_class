@@ -1,5 +1,7 @@
 package homework;
 
+import java.util.Scanner;
+
 public class HW08_BaseballGame {
 
 	public static void main(String[] args) {
@@ -25,32 +27,72 @@ public class HW08_BaseballGame {
 		 */
 		int [] Baseball = new int[3];
 		int min = 1, max = 9;
-		
+		//중복되지 않는 숫자 생성
 		for(int i = 0; i < 3; ) {
 			int r = (int)(Math.random() * (max - min + 1) + min);
 			if(r != Baseball[0] && r != Baseball[1] && r != Baseball[2] ) {
 				Baseball[i] = r;
 				System.out.print(Baseball[i] + " ");
+				//나중에 안보이게 지울것->마지막에 정답일 경우 보이게 할 거임
 				i++;
 			}
 		}
-		//반복문으로 같은 번지에 있는 걸 찾고 그걸 S, 이중 반복문으로 전체 번지에 숫자가 동일한게 있으면 B 갯수 찾기
-		//S 정의
-		//Baseball[0]이 p1와 동일하면 count2 + 1 
-		//Baseball[1]이 p2와 동일하면 count2 + 1 
-		//Baseball[2]이 p3와 동일하면 count2 + 1 
-		//if로 count2가 1개이면 S1, 2개이면 S2=> S
-		//B 정의
-		//Baseball[0]이 p1와 같이 않고 p2나 p3이랑 동일하면 count1 + 1 
-		//Baseball[1]이 p2와 같이 않고 p1나 p3이랑 동일하면 count1 + 1 
-		//Baseball[2]이 p3와 같이 않고 p1나 p2이랑 동일하면 count1 + 1 
-		//if로 count1가 1개이면 B1, 2개이면 B2, 3개이면 B3 => B
 		
+		//숫자 입력 or 숫자를 배열에 인식
+		Scanner scan = new Scanner(System.in);
+		System.out.println("게임을 시작합니다.");
+		int S = 0;
+		int num[] = new int[3];
+		System.out.print("1~9 사이의 정수 3개를 입력하세요 : ");
+		num[0] = scan.nextInt();
+		num[1] = scan.nextInt();
+		num[2] = scan.nextInt();
+		for(int i = 0; i < 3; i++) {
+			//반복문으로 같은 번지에 있는 걸 찾고 난 뒤 S라 지칭
+			if(num[i] == Baseball[i]) {
+				S = S + 1;
+			}
+		}
+		System.out.println(S); 
+		int B = 0;
+		int B1 = 0;
+		int B2 = 0;
+		int B3 = 0;
+		for(B = 1; B < 4;) {
+			for(B1 = 0; B1 <= 1;) {
+				if(num[1] == Baseball[2] || num [1] == Baseball[0]); {
+					B1 = B1 + 1;
+					continue;
+				}
+			}
+			for(B2 = 0; B2 <= 1;) {
+				if(num[0] == Baseball[1] || num [0] == Baseball[2]); {
+					B2 = B2 + 1;
+					continue;
+				}
+			}
+			for(B3 = 0; B3 <= 1;) {
+				if(num[2] == Baseball[1] || num [2] == Baseball[0]); {
+					B3 = B3 + 1;
+					continue;
+				}
+			}
+			B = B1 + B2 + B3;
+		}
+		//이중 반복문으로 전체 번지에 동일한 숫자가 있는 것을 찾고 B라 지칭
+		System.out.println(B);
+		
+		
+		
+		
+		//반복문으로 같은 번지에 있는 걸 찾고 그걸 S, 이중 반복문으로 전체 번지에 숫자가 동일한게 있으면 B 갯수 찾기
 		
 		
 		//표시
 		//B, S가 있다면 표시, 없다면 O를 표시 후 입력창 활성화
 		//count2가 3개이면 정답입니다.를 표시하고 활동 종료
+		
+
 	}
 
 }

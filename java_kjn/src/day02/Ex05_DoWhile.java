@@ -17,7 +17,7 @@ public class Ex05_DoWhile {
 		int num = 10;
 		//do while문은 실행하고 조건식을 확인하기 때문에 조건이 맞지 않아도 실행
 		do {
-			System.out.println(num + "는 0보다 작습니다.(do while문");
+			System.out.println(num + "는 0보다 작습니다.(do while문)");
 			num--;
 		}while(num < 0);
 		//while문은 조건식을 먼저 확인하기 때문에 실행이 안됨
