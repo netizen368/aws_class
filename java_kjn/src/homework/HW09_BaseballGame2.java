@@ -1,5 +1,7 @@
 package homework;
 
+import java.util.Scanner;
+
 public class HW09_BaseballGame2 {
 
 	public static void main(String[] args) {
@@ -31,8 +33,18 @@ public class HW09_BaseballGame2 {
 		 * 등수를 어떻게 저장할 것인지?
 		 */
 		
+		int [] Baseball = new int[3];
+		int min = 1, max = 9;
+		//중복되지 않는 숫자 생성
+		for(int i = 0; i < 3; ) {
+			int r = (int)(Math.random() * (max - min + 1) + min);
+			if(r != Baseball[0] && r != Baseball[1] && r != Baseball[2] ) {
+				Baseball[i] = r;
+				i++;
+			}
+		}
 		
-		
+
 	}
 
 }
