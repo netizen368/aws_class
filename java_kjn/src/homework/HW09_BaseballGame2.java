@@ -44,8 +44,6 @@ public class HW09_BaseballGame2 {
 				i++;
 			}
 		}
-		
-
 	}
 
 }
