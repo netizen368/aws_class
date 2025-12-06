@@ -40,6 +40,7 @@ public class HW09_BaseballGame2 {
 			int r = (int)(Math.random() * (max - min + 1) + min);
 			if(r != Baseball[0] && r != Baseball[1] && r != Baseball[2] ) {
 				Baseball[i] = r;
+				System.out.print(r + " ");
 				i++;
 			}
 		}
