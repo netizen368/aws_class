@@ -89,7 +89,7 @@ public class HW08_BaseballGame {
 			if(S != 3) {
 				while(true) {
 					if(S < 3 || B <= 3) {
-						System.out.println("S : " + S + " B : " + B);
+						System.out.println(S + "S " + B + "B");
 					}else if(S == 0 && B == 0) {
 						System.out.println("out");
 					}
