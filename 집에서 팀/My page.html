@@ -6,35 +6,54 @@
 	<title>My page</title>
 	<style>
 		.container{
-			width : 400px; height: 400px;
+			width : 380px; height: 450px;
 			border: 1px solid black;
 			position: absolute;
 			box-sizing: border-box;
+			content: ''; display: inline-block; clear: both;
+			padding-left: 10px;
+			padding-top: 30px;
+			text-shadow: 0 5px 3px  gray;
+			margin-left: calc(50vw - 190px);
 		}
-		.container .box{
-			width : 150px; height: 150px;
-			border: 1px solid black;
+		.font{
+			font-weight: bold;
+
+		}
+		.container > div{
+			width : 170px; height: 170px;
+			border: 1px solid #DEBD9E;
+			background-color: #DEBD9E;
 			border-radius: 10%;
-			float: left;
+			line-height: 165px;
+			text-align: center;
+			font-weight: bold;
+			text-shadow: 0 2px 1px  gray;
+			box-shadow: 3px 4px 0 #A88B6F;
+			box-sizing: content-box;
 		}
 		.box{
-			text-align: center;
-			top: calc(50%)-75px
-			display;
-			line-height: 150px;
-			margin: 10px, 20px;  
-
+			float: left;
+			margin: 10px 2px;  
 		}
 		/* 그림자 속성으로 box 꾸미기 */
 	</style>
 </head>
 <body>
 	<fieldset class="container">
-		<legend>My page</legend>
-		<div class="box1 box">개인정보 수정</div>
-		<div class="box2 box">Cart</div>
-		<div class="box3 box">주문관리</div>
-		<div class="box4 box">Wish List</div>
+		<legend class="font">My Page</legend>
+		<div class="box1 box">
+			<a href="">개인정보 수정</a>
+		</div>
+		<div class="box2 box">
+			<a href="">Cart</a>
+		</div>
+		<div class="box3 box">
+			<a href="">주문관리</a>
+		</div>
+		<div class="box4 box">
+			<a href="">Wish List</a>
+		</div>
 	</fieldset>
 </body>
 </html>
