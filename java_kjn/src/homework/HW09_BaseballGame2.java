@@ -56,10 +56,12 @@ public class HW09_BaseballGame2 {
 			//선택된 메뉴에 맞는 기능 싷행
 			switch(menu) {
 			case '1':
+				//if로 정답을 맞추면 mainScore로 갈 수 있게끔
 				gameCount = Game(0);
 //				mainScore(bbgs, gameCount);
 				break;
 			case '2':
+				
 				break;
 			case EXIT:
 				System.out.println("게임을 종료합니다.");
