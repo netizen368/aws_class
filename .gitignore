@@ -28,4 +28,4 @@ java_kjn/.gitignore
 .project
 
 .settings/
-/bin/
+bin/
