@@ -57,7 +57,7 @@ public class HW09_BaseballGame2 {
 			switch(menu) {
 			case '1':
 				gameCount = Game(0);
-				mainScore(bbgs, gameCount);
+//				mainScore(bbgs, gameCount);
 				break;
 			case '2':
 				break;
@@ -141,16 +141,16 @@ public class HW09_BaseballGame2 {
 	    return gameCount;
 	}
 	//등수 확인, 이니셜 작성
-	public static BaseballGame[] mainScore(BaseballGame[]bbgs, int gameScore) {
-		//gameCount를 받아서 배열 정렬한 뒤에 5등 안이면 Score로 보낼수 있게 메인에 보내기
-		int i = 0;
-		for(i = 0; i < MAX_COUNT; i++) {
-			BaseballGame bbg = bbgs[i];
-			bbg.gameScore = gameScore;
-			System.out.println(bbgs[i]);
-		}
-		return bbgs;
-	}
+//	public static BaseballGame[] mainScore(BaseballGame[]bbgs, int gameScore) {
+//		//gameCount를 받아서 배열 정렬한 뒤에 5등 안이면 Score로 보낼수 있게 메인에 보내기
+//		int i = 0;
+//		for(i = 0; i < MAX_COUNT; i++) {
+//			BaseballGame bbg = bbgs[i];
+//			bbg.gameScore = gameScore;
+//			System.out.println(bbgs[i]);
+//		}
+//		return bbgs;
+//	}
 	//기록 확인
 	public static void Record() {
 		//기록 확인에서 확인 할 수 있게 mainScore에서 정보 불러올수있게

@@ -4,7 +4,7 @@ public class Ex06_Inheritance {
 
 	public static void main(String[] args) {
 
-		/* 클래스 상송 p.242
+		/* 클래스 상속 p.242
 		 * - 클래스를 물려 받는 것
 		 * - 부모 클래스의 필드, 메서드를 물려 받는 것
 		 * - 왜 사용?
