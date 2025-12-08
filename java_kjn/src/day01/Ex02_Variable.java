@@ -3,7 +3,7 @@ package day01;
 public class Ex02_Variable {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		/* 변수 : 정보를 저장하는 공간
 		 * 분류
 		 * - 기본형 : 공간에 실체 값이 저장(스택 메모리에 저장)
