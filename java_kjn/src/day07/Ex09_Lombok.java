@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 public class Ex09_Lombok {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		
 			Car c1 = new Car("아반뗴", "검은색");
 			System.out.println(c1);
-		
-	}
+		}
+	
 
 }
 @Data //getter, setter추가, toString, equals, hashCode 오버라이딩
