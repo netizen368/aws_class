@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>메모패드</title>
+<style>
+    body {
+        background: #f4f6fb;
+        font-family: 'Arial';
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+    }
+    .wrap {
+        width: 450px;
+    }
+    h1 {
+        text-align: center;
+        font-size: 35px;
+        margin-bottom: 25px;
+        font-weight: bold;
+    }
+    h1 i {
+        margin-left: 5px;
+    }
+
+    .input-area {
+        display: flex;
+        margin-bottom: 20px;
+    }
+    textarea {
+        flex: 1;
+        height: 90px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        resize: none;
+        font-size: 15px;
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    button {
+        width: 80px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        background: #1e4fc4;
+    }
+
+    .memo-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .memo-list li {
+        background: #ffffff;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        white-space: pre-line;
+        font-size: 15px;
+    }
+    .del {
+        color: #777;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .del:hover {
+        color: #000;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+    <h1>메모패드📝</h1>
+
+    <div class="input-area">
+        <textarea id="memoInput" placeholder="메모를 입력하세요…"></textarea>
+        <button id="addBtn">추가</button>
+    </div>
+
+    <ul class="memo-list" id="memoList"></ul>
+</div>
+
+<script>
+    const input = document.getElementById("memoInput");
+    const btn = document.getElementById("addBtn");
+    const list = document.getElementById("memoList");
+    const KEY = "memoPad";
+
+    document.addEventListener("DOMContentLoaded", loadMemo);
+
+    btn.addEventListener("click", addMemo);
+
+    function addMemo() {
+        let text = input.value.trim();
+        if (text === "") return alert("메모를 입력하세요");
+
+        let li = createMemoItem(text);
+        list.prepend(li);
+
+        saveMemo();
+        input.value = "";
+    }
+
+    function createMemoItem(text) {
+        let li = document.createElement("li");
+
+        let content = document.createElement("span");
+        content.textContent = text;
+
+        let delBtn = document.createElement("span");
+        delBtn.classList.add("del");
+        delBtn.textContent = "삭제";
+        delBtn.onclick = function () {
+            li.remove();
+            saveMemo();
+        };
+
+        li.append(content, delBtn);
+        return li;
+    }
+
+    function saveMemo() {
+        let arr = [];
+        document.querySelectorAll(".memo-list li span:first-child").forEach(item => {
+            arr.push(item.textContent);
+        });
+        localStorage.setItem(KEY, JSON.stringify(arr));
+    }
+
+    function loadMemo() {
+        let data = JSON.parse(localStorage.getItem(KEY));
+        if (!data) return;
+
+        data.forEach(text => {
+            let li = createMemoItem(text);
+            list.append(li);
+        });
+    }
+</script>
+</body>
+</html>
