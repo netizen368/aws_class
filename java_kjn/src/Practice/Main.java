@@ -8,10 +8,9 @@ public class Main {
 		
 		Scanner scan = new Scanner(System.in);
 		long A, B, C;
-		System.out.print("세가지 숫자를 입력 : ");
-		A = scan.nextInt();
-		B = scan.nextInt();
-		C = scan.nextInt();
+		A = scan.nextLong();
+		B = scan.nextLong();
+		C = scan.nextLong();
 		System.out.println(A + B + C);
 
 	}
