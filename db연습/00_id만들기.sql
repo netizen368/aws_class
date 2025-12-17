@@ -1,0 +1,3 @@
+CREATE USER 'root123'@'localhost' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON *.* TO 'root123'@'localhost';
+FLUSH PRIVILEGES;
