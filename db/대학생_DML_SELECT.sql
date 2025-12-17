@@ -1,0 +1,11 @@
+# 학과별 등록된 교수 수를 조회
+select MAJOR.*, COUNT(PR_NUM) 교수수 from MAJOR 
+	LEFT JOIN PROFESSOR ON MJ_CODE = PR_MJ_CODE
+    GROUP BY MJ_CODE;
+    
+# 2025년도에 컴퓨터공학(160)에 임용한 교수 수를 조회 
+select COUNT(*) from PROFESSOR 
+WHERE PR_NUM LIKE CONCAT('_', 2025, 160, '%');
+
+
+
