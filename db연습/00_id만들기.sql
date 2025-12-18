@@ -5,3 +5,5 @@ FLUSH PRIVILEGES;
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'root123'@'localhost';
 FLUSH PRIVILEGES;
 
+create database test;
+GRANT ALL PRIVILEGES ON test.* TO 'root123'@'localhost';

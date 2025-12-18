@@ -38,7 +38,7 @@ GRANT ALL PRIVILEGES ON WORLD.* TO 'abc123'@'%';
 # REVOKE 권한 ON DB명.테이블명 FROM '아이디'@'호스트';
 REVOKE SELECT ON WORLD.* FROM 'abc123'@'%'; 
 REVOKE ALL PRIVILEGES ON WORLD.* FROM 'abc123'@'%'; 
-# 쿼리 실행 정사, 왜인지 모르지만 에러 표시 뜸
+# 쿼리 실행 정상, 왜인지 모르지만 에러 표시 뜸
 
 # 권한 확인
 SHOW GRANTS FOR 'abc123'@'%';
