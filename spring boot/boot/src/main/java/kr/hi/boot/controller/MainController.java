@@ -69,9 +69,9 @@ public class MainController {
 		return "abc";
 	}
 	
-	@PostMapping("/post/list")
-	public String list() {
-		log.info("list입니다.");
-		return "list";
+	@GetMapping("/signup")
+	public String signup() {
+		return "user/signup";
 	}
+	
 }

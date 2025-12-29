@@ -1,0 +1,46 @@
+drwxr-xr-x
+
+d : 디렉토리, 폴더
+l : 심볼링 링크 
+r : 읽기 권한
+w : 쓰기권한
+x : 실행권한  
+첫 3개 : 사용자 본인권한 
+두번째 3개 : 같은 그룹
+마지막 3개 : 다른 그룹의 사용자 
+
+root 폴더에 abc 폴더를 만들고, abc 폴더에 hello.txt파일을 생성
+drwxr-xr-x 명령어 실행전
+drwxrwxr-x 명령어 실행후 
+
+775
+=> 사용자 본인이면 접근권한을 7
+=> 같은 그룹이면 접근권한을 7
+=> 다른 그룹의 사용자이면 접근권한을 5 
+rwx
+111(2) -> 7
+101(2) -> 5
+100(2) -> 4
+000(2) -> 0
+
+chmod 777
+chmod g+w
+chmod g-w
+chmod g=w
+
+g : group, u : user, o : other
++ : 권한 추가, - : 권한 회수, = : 권한 부여 
+
+/home/abc/test/text.txt
+rw-rw-r--
+
+abc 그룹 사용자
+- abc
+- xyz
+
+xyz 그룹 사용자
+- xyz 
+
+abc123 사용자를 추가
+hi 그룹을 생성
+abc123을 hi그룹에 추가

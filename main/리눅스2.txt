@@ -1,0 +1,45 @@
+리눅스 
+/ : 최상위
+/home : 사용자 폴더
+/etc : 설정 파일
+/var : 로그, 서버 데이터
+/bin : 기본 명령어
+
+확인 
+pwd : 현재 위치 확인
+ls : 폴더 목록 확인 
+ls -l : 자세히 보기 
+
+이동
+cd 폴더명 : 폴더로 이동
+cd /home/park
+cd .. : 한단계 위로 
+
+파일 만들기
+touch text.txt
+
+폴더 만들기
+mkdir project
+
+삭제
+rm test.txt
+
+내용 보기
+cat text.txt
+
+
+[주제] 사용자 계정
+
+1. useradd test
+ → 사용자 추가
+
+2. passwd test
+ → 비밀번호 설정
+
+3. su - test
+ → 계정 전환
+
+※ 에러:
+useradd: permission denied
+→ root로 안 해서 발생
+
