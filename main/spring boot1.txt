@@ -10,3 +10,7 @@
 /abc - post : MainController - abcPost
 /post/list - get : PostController - postList
 /signup - get : MainController - signup
+
+html 코드는 저장하고 브라우저 새로고침만 해도 됨
+
+서버 관련 코드(컨트롤러, 서비스, 다오, 매퍼, 설정등)은 서버 재가동
