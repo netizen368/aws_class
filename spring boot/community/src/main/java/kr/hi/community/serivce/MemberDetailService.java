@@ -14,11 +14,11 @@ import kr.hi.community.model.vo.MemberVO;
 public class MemberDetailService implements UserDetailsService{
 
 	@Autowired
-	MemberDAO memberDao;
+	MemberDAO memberDAO;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberVO member = memberDao.selectMember(username);
+		MemberVO member = memberDAO.selectMember(username);
 
 		return member == null ? null : new CustomUser(member);
 	}

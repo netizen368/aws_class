@@ -1,0 +1,21 @@
+package kr.hi.community.dao;
+
+import java.util.ArrayList;
+
+import org.apache.ibatis.annotations.Param;
+
+import kr.hi.community.model.vo.BoardVO;
+import kr.hi.community.model.vo.PostVO;
+
+public interface PostDAO {
+
+	ArrayList<PostVO> selectPostList();
+
+	//@Param("메퍼.xml에서 사용할 이름")
+	void updateView(@Param("num") int po_num);
+
+	PostVO selectPost(@Param("num") int po_num);
+
+	ArrayList<BoardVO> selectBoardList();
+
+}
