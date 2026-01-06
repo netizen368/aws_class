@@ -6,7 +6,8 @@
 	not found 예외 발생
 	 -->
     <select id="selectPostList" resultType="PostVO">
-    	select * from post 
+    	select post.*, bo_name po_bo_name from post 
+    	join board on po_bo_num = bo_num
     	<!-- 삭제 안된 게시글을 조회 -->
     	where po_del = 'N'
     	<!-- 최신 게시글이 위에 가도록 정렬 -->
@@ -20,7 +21,7 @@
         where 
     		po_num = #{num}
     	<!-- 삭제가 안된 게시글 -->
-    	and po_del = 'N'
+    		and po_del = 'N'
     </update>
     
     <select id="selectPost" resultType="PostVO">
@@ -33,6 +34,25 @@
     <select id="selectBoardList" resultType="BoardVO">
     	select * from board
     </select>
+    
+    <insert id="insertPost">
+    	insert into post(po_title, po_content, po_me_id, po_bo_num)
+    	values(#{post.title}, #{post.content}, #{post.writer}, #{post.board});
+    		
+    </insert> 
+    
+    <insert id="insertBoard">
+    	insert into board(bo_name) values(#{name});
+    </insert>
+    
+    <delete id="deleteBoard">
+    	delete from board where bo_num = #{num};
+    </delete>
+    
+    <update id="updateBoard">
+    	update board
+        set bo_name = #{name} where bo_num = #{num}
+    </update>
 </mapper>
 
 	

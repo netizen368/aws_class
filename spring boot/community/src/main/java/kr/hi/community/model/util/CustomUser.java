@@ -2,11 +2,13 @@ package kr.hi.community.model.util;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import kr.hi.community.model.UserRole;
 import kr.hi.community.model.vo.MemberVO;
 import lombok.Data;
 	
@@ -22,8 +24,21 @@ public class CustomUser extends User {
 	public CustomUser(MemberVO vo) {
 		super(	vo.getMe_id(),
 				vo.getMe_pw(), 
-				Arrays.asList(new SimpleGrantedAuthority(vo.getMe_role())));
+				getAuthorities(vo.getMe_role()));
 		this.user = vo;
+	}
+	private static List<SimpleGrantedAuthority> getAuthorities(String role){
+
+		if(role == null) {
+			return null;
+		}
+		//관리자(admin)이면 사용자(user) 권한도 추가
+		if(role.equals(UserRole.ADMIN.name())) {
+			return Arrays.asList(
+					new SimpleGrantedAuthority(role), //관리자권한
+					new SimpleGrantedAuthority("USER"));//사용자권한
+		}
+		return Arrays.asList(new SimpleGrantedAuthority(role));
 	}
 }
 
