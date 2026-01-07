@@ -10,14 +10,23 @@
 	<main layout:fragment="content" class="container">
 		<h1>게시글 목록</h1>
 		<div class="clearfix">
-			<a href="/post/list/0" class="btn float-start me-2" 
+			<a href="/post/list/0" class="btn float-start me-2"
 				th:classappend="${boardNum == 0} ? 'btn-success' : 'btn-outline-success'">전체</a>
 			<a th:each="board : ${boardList}"
-				th:href="@{/post/list/{num}(num=${board.bo_num})}" 
-				th:text="${board.bo_name}"
-				class="btn float-start me-2" 
+				th:href="@{/post/list/{num}(num=${board.bo_num})}"
+				th:text="${board.bo_name}" class="btn float-start me-2"
 				th:classappend="${boardNum == board.bo_num} ? 'btn-success' : 'btn-outline-success'">전체</a>
 		</div>
+		<hr>
+		<form th:action="@{/post/list/{num}(num=${boardNum})}" method="get"
+			class="input-group">
+			<select class="form-control" name="type">
+				<option value="0">전체</option>
+				<option value="1">제목 + 내용</option>
+				<option value="2">작성자</option>
+			</select> <input class="form-control" name="search">
+			<button class="btn btn-outline-success">검색</button>
+		</form>
 		<hr>
 		<table class="table table-hover">
 			<thead>
@@ -35,9 +44,8 @@
 				<tr th:each="post : ${list}">
 					<td th:text="${post.po_num}"></td>
 					<td th:text="${post.po_bo_name}"></td>
-					<td>
-						<a th:href="@{/post/detail/{num}(num=${post.po_num})}"
-						   th:text="${post.po_title}"></a></td>
+					<td><a th:href="@{/post/detail/{num}(num=${post.po_num})}"
+						th:text="${post.po_title}"></a></td>
 					<td th:text="${post.po_me_id}"></td>
 					<td th:text="${post.po_date}"></td>
 					<td th:text="${post.po_view}"></td>
@@ -48,7 +56,21 @@
 				</tr>
 			</tbody>
 		</table>
-		<a href="/post/insert" class="btn btn-outline-success">게시글 등록</a> 
+		<ul class="pagination justify-content-center">
+			<li class="page-item">
+				<a class="page-link"
+					href="javascript:void(0);">이전</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link"
+					href="javascript:void(0);">1</a>
+			</li>
+			<li class="page-item">
+				<a class="page-link"
+					href="javascript:void(0);">다음</a>
+			</li>
+		</ul>
+		<a href="/post/insert" class="btn btn-outline-success">게시글 등록</a>
 	</main>
 </body>
 </html>
