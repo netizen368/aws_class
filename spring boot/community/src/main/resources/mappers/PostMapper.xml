@@ -3,15 +3,17 @@
 <mapper namespace="kr.hi.community.dao.PostDAO">
 	<!-- 
 	id에는 dao의 메서드명을 입력, 오타 발생시 예외가 발생
-	not found 예외 발생
+	~~~(not found) 예외 발생
 	 -->
     <select id="selectPostList" resultType="PostVO">
     	select post.*, bo_name po_bo_name from post 
     	join board on po_bo_num = bo_num
     	<!-- 삭제 안된 게시글을 조회 -->
     	where po_del = 'N'
-    	<!-- 최신 게시글이 위에 가도록 정렬 -->
-    	order by po_num desc
+    	<!-- 전체 게시판이 아닌경우 -->
+    	<if test="cri.boardNum != 0">
+    		and po_bo_num = #{cri.boardNum}
+    	</if>
     </select>
     
     <update id="updateView">
