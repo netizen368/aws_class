@@ -117,6 +117,13 @@ public class PostService {
 		
 	}
 
+	public int getTotalCount(Criteria cri) {
+		if(cri == null) {
+			return 0;			
+		}
+		return postDAO.selectTotalCount(cri);
+	}
+
 
 
 
