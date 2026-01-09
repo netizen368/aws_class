@@ -49,5 +49,13 @@ public interface PostDAO {
 
 	LikeVO selectLike(@Param("like")LikeDTO like);
 
+	void insertLike(@Param("like")LikeDTO like);
+
+	void updateLike(@Param("like")LikeDTO like);
+
+	void deleteLike(@Param("like")LikeDTO like);
+
+	int selectLikeCount(@Param("postNum")int postNum, @Param("state")int state);
+
 
 }

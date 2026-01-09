@@ -263,9 +263,62 @@ public class PostService {
 	   //게시글번호와 사용자 아이디를 이용하여 추천 정보를 가져옴
 	   LikeVO likeVo = postDAO.selectLike(like);
 	   
-	   System.out.println(like);
+	   System.out.println(likeVo);
 	   
-	   return null;
+	   //추천 정보가 없으면
+	   if(likeVo == null) {
+		   //다오에게 게시글번호, 아이디, 상태를 주면서
+		   //추천/비추천을 추가하라고 요청
+		   postDAO.insertLike(like);
+		   //추천/비추천 했습니다를 반환
+		   // 추천 상태가 1이면 추천, 아니면 비추천
+		   if(like.getState() == 1) {			   
+			   return "추천했습니다.";
+		   }
+		   return "비추천했습니다.";   
+	   }
+	   
+	   //있으면
+	   //기존 상태와 현재 상태가 다른 경우(추->비추 또는 비추->추)면
+	   if(likeVo.getLi_state() != like.getState()) {
+		   //다오에게 게시글번호, 아이디, 상태를 주면서
+		   //추천/비추천을 수정하라고 요청
+		   //다오.추천비추천수정해(추천정보(게시글번호, 아이디, 상태));
+		   postDAO.updateLike(like);
+		   //추천/비추천을 했습니다를 반환
+		   if(like.getState() == 1) {			   
+			   return "추천했습니다.";
+		   }
+		   return "비추천했습니다.";  
+	   }
+	   //같으면(추천/비추천을 취소)
+	   //다오에게 게시글번호, 아이디를 주면서 
+       //추천/비추천을 삭제하라고 요청
+	   //다오야.추천비추천삭제해(추천정보(게시글번호,아이디));
+	   postDAO.deleteLike(like);
+	   
+	   if(like.getState() == 1) {			   
+		   return "추천을 취소했습니다.";
+	   }
+	   return "비추천을 취소했습니다."; 
+   }
+
+   public int getLikeCount(int postNum, int state) {
+	   return postDAO.selectLikeCount(postNum, state);
+   }
+
+   public int getLikeState(int postNum, CustomUser customUser) {
+	   //사용자가 로그인 안했으면 0을 반환
+	   if(customUser == null || customUser.getUsername() == null) {
+		   return 0;
+	   }
+	   LikeDTO likeDto = new LikeDTO(postNum, customUser.getUsername());
+	   LikeVO like = postDAO.selectLike(likeDto);
+	   //추천/비추천을 한적이 없으면
+	   if(like == null) {
+		   return 0;
+	   }
+	   return like.getLi_state();
    }
    
 }
