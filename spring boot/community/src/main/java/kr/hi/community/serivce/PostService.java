@@ -320,5 +320,9 @@ public class PostService {
 	   }
 	   return like.getLi_state();
    }
+
+   public void updateBoardLike(int postNum) {
+	   postDAO.updateBoardLike(postNum);
+   }
    
 }
