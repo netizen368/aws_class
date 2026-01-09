@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import kr.hi.community.model.dto.LikeDTO;
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.FileVO;
+import kr.hi.community.model.vo.LikeVO;
 import kr.hi.community.model.vo.PostVO;
 
 public interface PostDAO {
@@ -42,6 +44,10 @@ public interface PostDAO {
 	List<FileVO> selectFileList(@Param("num")int po_num);
 
 	void deleteFile(@Param("fiNum")int fi_num);
+
+	FileVO selectFile(@Param("fiNum")int num);
+
+	LikeVO selectLike(@Param("like")LikeDTO like);
 
 
 }

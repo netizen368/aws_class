@@ -17,36 +17,87 @@
 			<div class="input-group mb-3">
 				<div class="form-control" th:text="'작성자 : ' + ${post.po_me_id}"></div>
 				<div class="form-control" th:text="'조회수 : ' + ${post.po_view}"></div>
-				<div class="form-control" 
+				<div class="form-control"
 					th:text="'추/비추 : ' + ${post.po_up} + '/' + ${post.po_up}"></div>
 			</div>
 			<div class="mb-3">
+				<button class="btn btn-outline-success"
+					th:onclick="|setLike(${post.po_num}, 1)|">추천</button>
+				<button class="btn btn-outline-danger"
+					th:onclick="|setLike(${post.po_num}, -1)|">비추천</button>
+			</div>
+			<div class="mb-3">
 				<label>내용 : </label>
-				<div class="form-control" style="min-height: 400px" 
+				<div class="form-control" style="min-height: 400px"
 					th:text="${post.po_content}"></div>
 			</div>
 			<div class="mb-3" th:if="${!files.isEmpty()}">
-				<label>첨부파일([[${files.size()}]])</label>
-				<a th:each="file : ${files}"
-					th:href="@{|/download/${file.fi_name}|}"
-					th:text="${file.fi_ori_name}"
-					class="form-control mb-3"
-					th:download="${file.fi_ori_name}"
-				></a>
+				<label>첨부파일([[${files.size()}]])</label> <a
+					th:each="file : ${files}" th:href="@{|/download/${file.fi_name}|}"
+					th:text="${file.fi_ori_name}" class="form-control mb-3"
+					th:download="${file.fi_ori_name}"></a>
 			</div>
 			<!-- 삭제버튼 추가 : 게시글 작성자면 삭제 버튼이 보임 -->
-			<form
-				th:if="${#authentication.name == post.po_me_id}" 
-				th:action="@{/post/delete/{num}(num=${post.po_num})}" 
-				method="post">
+			<form th:if="${#authentication.name == post.po_me_id}"
+				th:action="@{/post/delete/{num}(num=${post.po_num})}" method="post">
 				<button class="btn btn-outline-danger">삭제</button>
-				<a th:href="@{/post/update/{num}(num=${post.po_num})}" 
+				<a th:href="@{/post/update/{num}(num=${post.po_num})}"
 					class="btn btn-outline-warning">수정</a>
 			</form>
 		</div>
 		<div th:if="${post == null}">
 			<h1>삭제되거나 등록되지 않은 게시글입니다.</h1>
 		</div>
+
+		<script type="text/javascript">
+		async function setLike(postNum, state) {
+			const postData = {
+				// 보낼 데이터 채우기
+				// postNum : postNum 한거와 같음
+				// 왼쪽 이름을 postNum으로 하고 값은 postNum변수에 있는 값을 가져옴
+				postNum, //게시글번호
+				state //추천상태
+			};
+
+			try {
+				const response = 
+					//fetch는 지정된 URL로 비동기 통신요청
+					//결과를 Promise 객체로 반환
+					await fetch('/post/like', 
+						//설정
+						{
+						//전송방식을 post로
+						method: 'POST',
+						//Content-type : 전송할 데이터 타입,
+						//   json으로 전송하는 경우 반드시 작성,
+						headers: {
+						//전송할 데이터가 json타입이다라고 지정
+						 'Content-Type': 'application/json',
+						},
+						//보낼 데이터
+						body: JSON.stringify(postData)
+					});
+	
+				// 1. HTTP 응답 상태가 성공인지 확인
+				if (response.ok) {
+					// 서버가 단순 텍스트를 주면 text(), JSON을 주면 json()
+					// 서버가 보낸 결과를 text() : 텍스트로 가져옴
+					// 서버가 보낸 결과를 json() : json 객체로 가져옴
+					const result = await response.json(); 
+					console.log(result);
+				} else {
+					// 2. 400, 500 에러 등에 대한 처리
+					const errorText = await response.text();
+					console.log("서버 오류: " + errorText);
+				}
+
+			} catch (error) {
+				// 3. 네트워크 단절이나 문법 에러 등 아주 예외적인 상황
+				console.error("통신 중 오류 발생:", error);
+				alert("통신에 실패했습니다.");
+			}
+		}
+		</script>
 	</main>
 </body>
 </html>

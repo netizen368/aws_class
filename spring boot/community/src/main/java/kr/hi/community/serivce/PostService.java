@@ -10,12 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.hi.community.controller.HomeController;
 import kr.hi.community.dao.PostDAO;
+import kr.hi.community.model.dto.LikeDTO;
 import kr.hi.community.model.dto.PostDTO;
 import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
 import kr.hi.community.model.util.UploadFileUtils;
 import kr.hi.community.model.vo.BoardVO;
 import kr.hi.community.model.vo.FileVO;
+import kr.hi.community.model.vo.LikeVO;
 import kr.hi.community.model.vo.PostVO;
 
 @Service
@@ -208,8 +210,8 @@ public class PostService {
 	
 }
 
-   public void updatePost(PostDTO post, CustomUser customUser) {
-      //사용자가 로그인 안햇으면 종료
+   public void updatePost(PostDTO post, CustomUser customUser, List<MultipartFile> files, List<Integer> delFileNums) {
+      //사용자가 로그인 안했으면 종료
       if(customUser == null || customUser.getUsername().isEmpty()) {
          return;
       }
@@ -230,10 +232,40 @@ public class PostService {
       }
       //다오에게 게시글 정보를 주면서 수정하라고 요청
       postDAO.updatePost(post);
+      
+      //새 첨부파일을 추가
+      if(files != null) {
+    	  for(MultipartFile file : files) {
+    		  insertFile(post.getPostNum(), file);
+    	  }
+      }
+      if(delFileNums != null) {
+    	  for(int num : delFileNums) {
+    		  FileVO fileVo = postDAO.selectFile(num);
+    		  deleteFile(fileVo);
+    	  }
+      }
    }
 
    public List<FileVO> getFileList(int po_num) {
 	   return postDAO.selectFileList(po_num);
+   }
+
+   public String updateLike(LikeDTO like, CustomUser customUser) {
+	   if(like == null) {
+		   throw new RuntimeException("추천 정보가 없습니다.");
+	   }
+	   if(customUser == null || customUser.getUsername() == null) {
+		   throw new RuntimeException("로그인이 필요한 서비스입니다.");
+	   }
+	   //화면에서 보낸 추천 정보에 로그인한 사용자 아이디를 추가
+	   like.setId(customUser.getUsername());
+	   //게시글번호와 사용자 아이디를 이용하여 추천 정보를 가져옴
+	   LikeVO likeVo = postDAO.selectLike(like);
+	   
+	   System.out.println(like);
+	   
+	   return null;
    }
    
 }
