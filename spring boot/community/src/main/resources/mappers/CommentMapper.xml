@@ -3,14 +3,15 @@
 <mapper namespace="kr.hi.community.dao.CommentDAO">
 	<insert id="insertCommnet">
 		insert into comment (co_num, co_ori_num, co_po_num, co_me_id, co_content)
-		<if test="coDTO.coOriNum == 0">
+		<!-- 댓글 등록 -->
+		<if test="coDto.coOriNum == 0">
 			select 
 				ifnull(max(co_num), 0) + 1,
 				ifnull(max(co_num), 0) + 1,
 			    #{coDto.postNum}, 
 			    #{coDto.id}, 
 			    #{coDto.content}
-			from comment;	
+			from comment	
 		</if>
 		<!-- 
 		댓글 : co_num == co_ori_num
