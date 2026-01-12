@@ -20,8 +20,7 @@
 			</div>
 			<!-- 추천/비추천 버튼 그룹 -->
 			<div class="mb-3 d-flex justify-content-center">
-				<button 
-					class="btn btn-up btn-outline-success me-3"
+				<button class="btn btn-up btn-outline-success me-3"
 					th:onclick="|setLike(${post.po_num}, 1)|">추천</button>
 				<button class="btn btn-down btn-outline-danger"
 					th:onclick="|setLike(${post.po_num}, -1)|">비추천</button>
@@ -44,7 +43,7 @@
 				<a th:href="@{/post/update/{num}(num=${post.po_num})}"
 					class="btn btn-outline-warning">수정</a>
 			</form>
-			
+
 			<hr>
 			<h1>댓글</h1>
 			<!-- 댓글 영역 -->
@@ -52,7 +51,7 @@
 				<!-- 댓글 목록 영역 -->
 				<div class="comment-list">
 					<div class="comment-item mb-3 form-control">
-						<div class="d-flex justify-content-between mb-3">
+						<div class="d-flex justify-content-between">
 							<div>작성자</div>
 							<div>2026.01.09. 17:10</div>
 						</div>
@@ -60,7 +59,7 @@
 						<div class="mt-3">댓글 내용</div>
 					</div>
 					<div class="comment-item mb-3 form-control">
-						<div class="d-flex justify-content-between mb-3">
+						<div class="d-flex justify-content-between">
 							<div>작성자</div>
 							<div>2026.01.09. 17:10</div>
 						</div>
@@ -68,24 +67,22 @@
 						<div class="mt-3">댓글 내용</div>
 					</div>
 				</div>
-				
+
 				<!-- 댓글 페이지네이션 영역 -->
 				<div class="comment-pagination">
 					<ul class="pagination justify-content-center">
-					    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-					    <li class="page-item"><a class="page-link" href="#">1</a></li>
-					    <li class="page-item"><a class="page-link" href="#">2</a></li>
-					    <li class="page-item"><a class="page-link" href="#">3</a></li>
-					    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+						<li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
 					</ul>
 				</div>
-				
+
 				<!-- 댓글 입력 영역 -->
 				<div class="comment-input">
-					<form class="input-group" 
-						onsubmit="insertComment(event)">
-						<textarea class="form-control" 
-							onfocus="checkLogin(this)"></textarea>
+					<form class="input-group" onsubmit="insertComment(event)">
+						<textarea class="form-control" onfocus="checkLogin(this)"></textarea>
 						<button class="btn btn-outline-success">등록</button>
 					</form>
 				</div>
@@ -104,8 +101,18 @@
 			const id = '[[${user}]]';
 			//게시글 번호. CommentDTO의 게시글 번호 필드와 이름이 같게 작성 
 			const postNum = [[${post.po_num}]];
+			//댓글 목록을 보여줄 요소
+			const listContainer = document.querySelector(".comment-list");
+			//댓글 페이지 정보를 관리하는 객체
+			const cri = {
+				page : 1, //현재 페이지
+				postNum //게시글 번호
+			}
+			//페이지네이션을 보여줄 요소
+			const commentPagination =
+				document.querySelector(".comment-pagination .pagination");
 		</script>
-		
+
 		<!-- 추천, 비추천 js -->
 		<script type="text/javascript">
 		
@@ -221,7 +228,7 @@
 		}
 		
 		</script>
-	`	
+		`
 		<!-- 댓글 js -->
 		<script type="text/javascript">
 			//로그인 되었는지 확인
@@ -254,17 +261,21 @@
 					return;
 				}
 				let comment = {
-					content, //댓글내용, CommnetDTO에서 내용을 content로 설정함
+					content, //댓글내용, CommentDTO에서 내용을 content로 설정함
 					postNum, //게시글 번호
 				}
+				
 				//비동기통신으로 댓글 내용을 가져옴
 				sendInsertComment(comment);
+				//추가한 댓글 내용 삭제
+				commentInsertInputEl.value = '';
+				
 			}
 			async function sendInsertComment(comment){
 				try{
 					//await는 비동기인 fetch가 다 끝날때까지 기다리게 하는 역할
 					//그래야 밑에서 response를 이용할 때 문제가 안 생김
-					const response = await fetch('/commnet/insert', {
+					const response = await fetch('/comment/insert', {
 						method : 'post', //JSON으로 보낼땐 무조건 post
 						headers : {
 							'Content-Type' : 'application/json' //보내는 데이터 형태
@@ -275,13 +286,110 @@
 					const result = await response.text();
 					//알림창으로 댓글 추가 결과를 알려줌
 					alert(result);
+					//댓글 목록 다시 불러오기
+					cri.page = 1;
+					getCommentList(cri);
 				}catch(error){
 					console.error("예외 발생");
 					console.error(error);
 				}
 			}
+			//댓글 불러오는 함수
+			async function getCommentList(cri){
+				try{
+					//서버에 댓글 목록 가져오라고 요청				
+					const response = await fetch(
+						`/comment/list`,{
+						//옵션은 페이지네이션 적용할 때 추가
+						method : 'post',
+						headers : {
+							'Content-Type' : 'application/json' 
+						},
+						body : JSON.stringify(cri)
+					})
+					
+					//가져와서 화면에 출력
+					//서버에서 보낸 댓글 목록을 가져옴
+					const result = await response.json();
+					
+					//가져온 댓글 목록을 이용하여 화면을 구성
+					drawCommentList(result.list);
+					//가져온 페이지네이션 정보를 이용하여 페이지네이션을 구성
+					drawCommentPagination(result.pm);
+				}catch(error){
+					console.log("예외 발생");
+					console.log(error);
+				} 
+			}
+			function drawCommentList(list){
+				console.log(list)
+				//댓글 목록이 없으면
+				if(list.length == 0){
+					listContainer.innerHTML = `
+					<div class="form-control">등록된 댓글이 없습니다.</div>
+					`;
+					return;
+				}
+				//댓글 목록이 있으면
+				//for of는 향상 for문
+				//for in은 key값을 가져와서 활용
+				let items = '';
+				for(comment of list){
+					items += `
+					<div class="comment-item mb-3 form-control">
+						<div class="d-flex justify-content-between">
+							<div>${comment.co_me_id}</div>
+							<div>${comment.co_date}</div>
+						</div>
+						<hr>
+						<div class="mt-3">${comment.co_content}</div>
+					</div>
+					`;
+				}
+				listContainer.innerHTML = items;
+			}
+			
+			function drawCommentPagination(pm){
+				let pagination = '';
+				
+				//pm을 이용하여 페이지네이션을 구성
+				//이전 버튼 활성화
+				if(pm.prev){
+					pagination += `
+					<li onclick="changePage(${pm.startPage - 1})"
+						class="page-item">
+						<a class="page-link" href="javascript:void(0);">이전으로</a>
+					</li>
+					`
+				}
+				
+				for(i = pm.startPage; i <= pm.endPage; i++){
+					pagination += `
+					<li onclick="changePage(${i})"
+						class="page-item ${pm.cri.page == i ? 'active' : ''}">
+						<a class="page-link" href="javascript:void(0);">${i}</a>
+					</li>
+					`
+				}
+				
+				if(pm.next){
+					pagination += `
+					<li onclick="changePage(${pm.endPage + 1})"
+						class="page-item">
+						<a class="page-link" href="javascript:void(0);">다음으로</a>
+					</li>
+					`
+				}
+				commentPagination.innerHTML = pagination;
+			}
+			function changePage(page){
+				cri.page = page;
+				getCommentList(cri);
+			}
+			//댓글 불러오도록 호출
+			getCommentList(cri);
 		</script>
-		
+
 	</main>
 </body>
 </html>

@@ -1,11 +1,17 @@
 package kr.hi.community.serivce;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.hi.community.dao.CommentDAO;
 import kr.hi.community.model.dto.CommentDTO;
+import kr.hi.community.model.util.CommentCriteria;
+import kr.hi.community.model.util.Criteria;
 import kr.hi.community.model.util.CustomUser;
+import kr.hi.community.model.util.PageMaker;
+import kr.hi.community.model.vo.CommentVO;
 
 @Service
 public class commentService {
@@ -13,7 +19,7 @@ public class commentService {
 	@Autowired
 	CommentDAO commentDAO;
 
-	public String insertCommnet(CommentDTO dto, CustomUser customUser) {
+	public String insertComment(CommentDTO dto, CustomUser customUser) {
 		//매개변수 체크
 		//로그인 여부 체크
 		if(customUser == null || customUser.getUsername() == null) {
@@ -30,11 +36,22 @@ public class commentService {
 		try {
 			//댓글 작성자를 로그인한 사용자 아이디로 수정
 			dto.setId(customUser.getUsername());
-			commentDAO.insertCommnet(dto);
+			commentDAO.insertComment(dto);
 			return "댓글을 등록했습니다.";
 		}catch(Exception e) {
 			return "댓글을 등록하지 못했습니다.";
 		}
 		
+	}
+
+	public List<CommentVO> getCommentList(Criteria cri) {
+		List<CommentVO> list = commentDAO.selectCommentList(cri);
+		return list;
+	}
+
+	public PageMaker getPageMaker(Criteria cri) {
+		//다오에게 페이지 정보 주면서 전체 댓글 수를 가져오라고 요청
+		int totalcount = commentDAO.selectCommentCount(cri);
+		return new PageMaker(3, cri, totalcount);
 	}
 }
