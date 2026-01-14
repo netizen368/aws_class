@@ -7,7 +7,7 @@ import kr.hi.community.model.vo.MemberVO;
 
 public interface MemberDAO {
 
-	MemberVO selectMember(@Param("id") String id);
+	MemberVO selectMember(@Param("id")String id);
 
 	boolean insertMember(@Param("obj")MemberDTO member);
 

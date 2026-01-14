@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import kr.hi.boot.model.dto.PostDTO;
+import kr.hi.boot.model.util.Criteria;
 import kr.hi.boot.model.vo.Board;
 import kr.hi.boot.model.vo.Post;
 
@@ -18,7 +19,7 @@ public interface PostDAO {
 
 	void updateBoard(@Param("num")int num, @Param("name")String name);
 
-	ArrayList<Post> getPostList();
+	ArrayList<Post> selectPostList(@Param("cri")Criteria cri);
 
 	Post getPost(@Param("num")int num);
 
@@ -27,6 +28,8 @@ public interface PostDAO {
 	void insertPost(@Param("post")PostDTO post);
 
 	void updatePostView(@Param("num")int num);
+
+	int selectPostListCount(@Param("cri")Criteria cri);
 
 
 

@@ -7,6 +7,18 @@
 <body>
 	<main layout:fragment="content" class="container">
 		<h1>게시글 목록</h1>
+		<!-- 게시판 목록 -->
+		<div class="d-flex my-5">
+			<a class="btn me-3"
+				th:classappend="${pm.cri.boNum == 0 ? 'btn-danger' : 'btn-outline-danger'}"
+				th:href="@{/post/list(boNum=0)}" >전체</a>
+			<a class="btn me-3"
+				th:classappend="${pm.cri.boNum == board.bo_num ? 'btn-dark' : 'btn-outline-dark'}"
+				th:each="board : ${bList}"
+				th:href="@{/post/list(boNum=${board.bo_num})}" >[[${board.bo_name}]]</a>
+		</div>
+		<hr>		
+		<!-- 게시글 목록 -->
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -18,6 +30,9 @@
 					<th>조회수</th>
 				</tr>
 			</thead>
+			<tr th:if="${list.isEmpty()}">
+				<th class="text-center" colspan="6">등록된 게시글이 없습니다.</th>
+			</tr>
 			<tbody>
 				<tr th:each="post : ${list}">
 					<td th:text="${post.po_num}"></td>
@@ -34,6 +49,18 @@
 				</tr>
 			</tbody>
 		</table>
+		
+		<ul class="pagination justify-content-center" 
+			th:if="${pm.endPage != 0}">
+		    <li class="page-item" th:if="${pm.prev}" th:href="@{/post/list(page=${pm.startPage-1}, boNum=${pm.cri.boNum})}">
+		    	<a class="page-link" href="javascript:void(0);">이전</a></li>
+		    <li class="page-item" 
+		    	th:classappend="${page == pm.cri.page ? 'active' : ''}"
+		    	th:each="page : ${#numbers.sequence(pm.startPage, pm.endPage)}">
+		 		<a class="page-link" th:href="@{/post/list(page=${page}, boNum=${pm.cri.boNum})}">[[${page}]]</a></li>
+		    <li class="page-item" th:if="${pm.next}">
+		    	<a class="page-link" th:href="@{/post/list(page=${pm.endPage+1}, boNum=${pm.cri.boNum})}">다음</a></li>
+		  </ul>
 		<a 
 			sec:authorize="isAuthenticated()"
 			th:href="@{/post/insert}" 

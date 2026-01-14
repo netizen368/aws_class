@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PostDTO {
-	
+
 	int postNum;
 	String title;
 	String content;

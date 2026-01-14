@@ -6,4 +6,5 @@ import lombok.Data;
 public class CommentCriteria extends Criteria {
 
 	int postNum;
+	
 }

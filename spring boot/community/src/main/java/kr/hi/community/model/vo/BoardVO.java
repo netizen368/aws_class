@@ -7,4 +7,5 @@ public class BoardVO {
 	
 	int bo_num;
 	String bo_name;
+	
 }
