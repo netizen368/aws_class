@@ -1,6 +1,5 @@
-	package kr.hi.boot.model.util;
+package kr.hi.boot.model.util;
 
 public enum UserRole {
-	USER, ADMIN
-
+	ADMIN, USER
 }

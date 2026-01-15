@@ -3,12 +3,12 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-<meta charset="UTF-8">
-<title th:replace="this :: title">Default Title</title>
-<link rel="stylesheet" th:href="@{/css/style.css}" />
+    <meta charset="UTF-8">
+    <title th:replace="this :: title">Default Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-	<header class="container-fluid bg-dark" th:fragment="header">
+    <header class="container-fluid bg-dark" th:fragment="header">
 		<nav class="navbar navbar-expand-sm navbar-dark">
 			<div class="container">
 				<a class="navbar-brand" href="/">Logo</a>
@@ -22,14 +22,14 @@
 						<th:block sec:authorize="hasAuthority('ADMIN')">
 							<li class="nav-item"><a class="nav-link" th:href="@{/admin/board}">관리자 메뉴</a></li>
 						</th:block>
-						<!-- 로그인 안한 사용자만 보여야함 -->
+						<!-- 로그인 안한 사용자만 보여야 함 -->
 						<th:block sec:authorize="isAnonymous()">
 							<li class="nav-item"><a class="nav-link" th:href="@{/signup}">회원가입</a></li>
 							<li class="nav-item"><a class="nav-link" th:href="@{/login}">로그인</a></li>
 						</th:block>
 						<th:block sec:authorize="isAuthenticated()">
 							<li class="nav-item">
-								<form action="/logout">
+								<form action="/logout" method="post">
 									<button class="btn nav-link">로그아웃</button>
 								</form>
 							</li>
@@ -46,6 +46,7 @@
 				</div>
 			</div>
 		</nav>
+		
 	</header>
 </body>
 </html>

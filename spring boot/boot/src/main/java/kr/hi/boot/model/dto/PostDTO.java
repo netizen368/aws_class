@@ -8,5 +8,4 @@ public class PostDTO {
 	String title, content;
 	int board;
 	String id;
-	
 }

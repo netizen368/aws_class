@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor //기본 생성자
-@AllArgsConstructor //모든 필드를 필요로 하는 생성자 	
+@AllArgsConstructor //모든 필드를 필요로 하는 생성자
 public class Human {
 	String name;
 	int age;
