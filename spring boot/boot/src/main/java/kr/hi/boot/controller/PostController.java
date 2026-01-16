@@ -92,6 +92,32 @@ public class PostController {
 		postService.deletePost(poNum, user);
 		return "redirect:/post/list";
 	}
+	@GetMapping("/post/update/{num}")
+	public String postUpdate(
+			//- 화면에서 보낸 게시글 번호를 가져옴
+			@PathVariable("num")int poNum,
+			Model model) {
+		//- 서비스에게 게시글 번호를 주면서 게시글을 가져오라고 요청
+		//게시글 = 서비스야.게시글가져와(게시글번호);
+		Post post = postService.getPost(poNum);
+		//- 가져온 게시글을 화면에 전달
+		model.addAttribute("post", post);
+		return "post/update";
+	}
+	@PostMapping("/post/update/{num}")
+	public String postUpdate(
+			//URL에 있는 게시글 번호를 가져옴
+			@PathVariable("num")int poNum,
+			//로그인한 사용자 정보 가져옴
+			@AuthenticationPrincipal CustomUser user,
+			//화면에서 보낸 제목과 내용을 가져옴
+			PostDTO dto
+			) {
+		//서비스에게 게시글번호, 제목, 내용, 사용자 정보를 주면서 수정하라고 요청
+		//서비스야.게시글정보수정해(게시글번호, 게시글제목과내용, 사용자정보);
+		postService.updatePost(poNum, dto, user);
+		return "redirect:/post/detail/{num}";
+	}
 }
 
 
