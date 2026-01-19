@@ -42,14 +42,26 @@
     
     <insert id="insertComment">
     	insert into 
-    	comment(co_num, co_ori_num, co_me_id, co_content, co_po_num)
+    	comment(co_num, co_ori_num, co_me_id, co_content, co_po_num) 
     	select 
-	    	ifnull(max(co_num), 0) + 1, 
-	    	ifnull(max(co_num), 0) + 1,  
-	    	#{comment.id}, 
-	    	#{comment.content},
-	    	#{comment.postNum}
-    	from comment
+    		ifnull(max(co_num), 0) + 1, 
+    		
+    		<choose>
+    			<!-- 댓글 -->
+    			<when test="comment.oriNum == 0">
+    				ifnull(max(co_num), 0) + 1,
+    			</when>
+    			<!-- 대댓 -->
+    			<otherwise>
+    				#{comment.oriNum},
+    			</otherwise>
+    		</choose>
+    		 
+    		
+    		#{comment.id}, 
+    		#{comment.content},
+    		#{comment.postNum}
+    	from comment 
     </insert>
     
     <select id="selectComment" resultMap="commentMap">
@@ -57,8 +69,19 @@
     </select>
     
     <update id="deleteComment">
-    	update comment set co_del = 'Y'
-    	where co_num = #{coNum}
+    	update comment
+    	set
+    		co_del = 'Y'
+    	where
+    		co_num = #{coNum}
+    </update>
+    
+    <update id="updateComment">
+    	update comment
+    	set
+    		co_content = #{content}
+    	where
+    		co_num = #{coNum}
     </update>
 </mapper>
 

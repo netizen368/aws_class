@@ -11,7 +11,7 @@ public interface CommentDAO {
 
 	List<Comment> selectComments(@Param("poNum")int poNum, @Param("cri")Criteria cri);
 
-	int selectCommentsCount(@Param("poNum")int poNum, @Param("cri")Criteria cri);
+	int selectCommentsCount(@Param("poNum")int poNum);
 
 	boolean insertComment(@Param("comment")Comment comment);
 
@@ -19,5 +19,5 @@ public interface CommentDAO {
 
 	boolean deleteComment(@Param("coNum")int coNum);
 
-	
+	boolean updateComment(@Param("coNum")int coNum, @Param("content")String content);
 }
