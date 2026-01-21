@@ -1,0 +1,21 @@
+프로젝트 완료 후 로컬 테스트
+
+1. 프로젝트 빌드
+
+cd 프로젝트폴더경로
+gradlew build
+
+2. 이미지 생성
+docker build -t app명 .
+
+3. 이미지 실행(컨테이너 생성)
+docker run -p 80:8080 이미지명
+
+CREATE USER 'abc1234'@'%' IDENTIFIED BY 'abc1234';
+
+GRANT ALL PRIVILEGES ON test.* TO 'abc1234'@'%';
+
+sudo docker pull user368/com ->
+sudo docker run -d -p 80:8080 -v /home/ubuntu/uploads:/home/ubuntu/uploads --name com user368/com
+
+docker run -p 80:8080 com
