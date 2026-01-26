@@ -1,0 +1,30 @@
+
+function App8(){
+	//객체 배열
+	const list = [
+		{
+			name : "홍길동",
+			age : 21
+		},
+		{
+			name : "둘리",
+			age : 21
+		},
+		{
+			name : "고길동",
+			age : 41
+		}
+	]
+	return(
+		<div>
+			<ul>
+				<li>
+					<span>홍길동 : </span>
+					<span>21</span>
+				</li>
+			</ul>
+		</div>
+	);
+}
+
+export default App8;
