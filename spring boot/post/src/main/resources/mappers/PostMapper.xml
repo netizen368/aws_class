@@ -12,4 +12,8 @@
 	<insert id="insertPost">
 		insert into post(title, writer, content) values(#{post.title}, #{post.writer}, #{post.content})
 	</insert>
+
+	<delete id="deletePost">
+		delete from post where num = #{num}
+	</delete>	
 </mapper>

@@ -41,7 +41,7 @@ function Posts(){
 								<tr key={"post" + post.num}>
 									<td>{post.num}</td>
 									<td>
-										<Link to={"/post/detail" + post.num}>{post.title}</Link>
+										<Link to={"/post/detail/" + post.num}>{post.title}</Link>
 									</td>
 									<td>{post.writer}</td>
 									<td>{post.date}</td>
