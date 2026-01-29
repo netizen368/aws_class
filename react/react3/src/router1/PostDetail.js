@@ -69,8 +69,8 @@ function PostDetail(){
             console.error(e);
          }
       }
-			sendDelPost();
-      }
+      sendDelPost();
+   }
 
    return (
       <div>
