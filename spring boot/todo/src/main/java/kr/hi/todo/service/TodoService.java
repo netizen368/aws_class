@@ -16,8 +16,8 @@ public class TodoService {
 		this.todoDAO = todoDAO;
 	}
 
-	public List<TodoVO> getTodos() {
-		return todoDAO.selectTodos();
+	public List<TodoVO> getTodos(String date) {
+		return todoDAO.selectTodos(date);
 	}
 
 	public boolean insertTodo(TodoVO todo) {
@@ -29,10 +29,19 @@ public class TodoService {
 		}
 	}
 
-	public boolean deleteTodo(TodoVO todo, int num) {
+	public boolean deleteTodo(int num) {
 		try {
-			return todoDAO.deleteTodo(todo, num);
+			return todoDAO.deleteTodo(num);
 		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean updateTodo(TodoVO todo) {
+		try {
+			return todoDAO.updateTodo(todo);			
+		}catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}

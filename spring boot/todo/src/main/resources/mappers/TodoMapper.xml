@@ -4,6 +4,9 @@
     
     <select id="selectTodos" resultType="TodoVO">
     	select * from todo 
+    	<if test='date != ""'>
+    		where date = #{date}
+    	</if>
     	order by date desc, `order` asc
     </select>
     
@@ -18,8 +21,11 @@
     </insert>
     
     <delete id="deleteTodo">
-    	delete from todo
-		where 
-			num = #{num};
+    	delete from todo where num = #{num};
     </delete>
+    
+    <update id="updateTodo">
+    	update todo set text = #{todo.text}
+    	where num = #{todo.num}
+    </update>
 </mapper>
