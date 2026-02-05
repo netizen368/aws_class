@@ -1,36 +1,62 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getMe } from "./api/authFech";
+import { authFetch } from "./api/authFetch";
 
-//컴포넌트 안에서 전역으로 사용할 수 있는 통로를 생성
 const AuthContext = createContext(null);
 
-//여기서 children은 props가 아닌 자식 컴포넌트
-export function AuthProvider({children}){
-
+function AuthProvider({children}){
 	const [user, setUser] = useState(null);
-	
-	const getMeAndSetUser = async () => {
+
+	const getMe = async ()=>{
 		try{
-			const res = await getMe();
-			if(res){
-				setUser(res);
+			const response = await authFetch("/api/v1/auth/me");
+	
+			if(response.ok){
+				const res = await response.json();
+				return res;
 			}
 		}catch(e){
 			console.error(e);
-			setUser(null);
 		}
-		
+		return null;
 	}
+
+	//첫 렌더링할때만 실행하기 위해
 	useEffect(()=>{
 		getMeAndSetUser();
 	}, []);
 
-	
+	const getMeAndSetUser = async ()=> {
+		//회원 정보를 가져오고 : getMe
+		const me = await getMe();
+		//가져온 회원정보를 user에 업데이트 : setUser
+		setUser(me);
+	}
+
+	const logout = async ()=>{
+		//accessToken 삭제
+		localStorage.removeItem("accessToken");
+		try{
+			//서버에 로그아웃 요청
+			const response = await authFetch("/api/v1/auth/logout", {method : "POST"});
+
+			if(!response.ok) return;
+
+			alert("로그아웃했습니다.")
+			//user를 null로 변경
+			setUser(null);
+			
+		}catch(e){
+			console.error(e);
+		}
+	}
+
 	return (
-		<AuthContext.Provider value={{user, setUser}} >
+		<AuthContext.Provider value={{user, getMeAndSetUser, logout}} >
 			{children}
 		</AuthContext.Provider>
 	)
 }
-//가독성, import 문제
-export const useAuth = ()=>useContext(AuthContext);
+
+const useAuth = ()=>useContext(AuthContext);
+
+export {useAuth, AuthProvider};
