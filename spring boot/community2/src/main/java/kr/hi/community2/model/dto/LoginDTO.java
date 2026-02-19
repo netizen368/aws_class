@@ -1,8 +1,5 @@
 package kr.hi.community2.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 /* record는 jdk 16부터 지원
  * - 객체의 값을 수정할 수 없는 클래스
  * - 선언된 모든 필드가 private final로 지정
