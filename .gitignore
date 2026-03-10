@@ -27,5 +27,6 @@ java_kjn/.gitignore
 .classpath
 .project
 
+.ipynb_checkpoints/
 .settings/
 bin/
