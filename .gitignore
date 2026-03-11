@@ -28,5 +28,7 @@ java_kjn/.gitignore
 .project
 
 .ipynb_checkpoints/
+__pycache__/
+**/__pycache__/
 .settings/
 bin/
