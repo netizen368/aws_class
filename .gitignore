@@ -34,4 +34,5 @@ __pycache__/
 bin/
 .vscode/
 python/day05/*.csv
+python/day10(ml)/*.csv
 python/**/*.html
