@@ -28,3 +28,6 @@
 - 강화학습
   - 보상 + 벌 => 학습
   - 게임
+- 텍스트 마이닝
+
+r'C:\Users\C607\Documents\aws Class\jee-2025-09\jdk21'
