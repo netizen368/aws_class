@@ -14,6 +14,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/api/v1")
@@ -38,6 +40,24 @@ public class APIController {
 				.block();
 	}
 	
+	@GetMapping("/movies/recommend")
+	public String moviRecomment(@RequestParam("title")String title,
+			@RequestParam("type")String type) {
+		
+		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
+		//보낼 데이터를 추가
+		bodyBuilder.part("title", title);
+		bodyBuilder.part("type", type);
+		
+		return webClient.post().uri("/movies/recommend")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
+				.body(BodyInserters
+						.fromMultipartData(bodyBuilder.build()))
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+	}
+	
 	@PostMapping("/text")
 	public String text(@RequestParam("msg")String msg) {
 		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
@@ -52,4 +72,17 @@ public class APIController {
 				.bodyToMono(String.class)
 				.block();
 	}
+	
+	@GetMapping("/movies")
+	public String movies() {
+		
+		//return "[{\"title\" : \"Avatar\"}]";
+		
+		return webClient.get().uri("/movies")
+				.retrieve()
+				.bodyToMono(String.class)
+				.block();
+		
+	}
+	
 }
