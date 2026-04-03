@@ -12,14 +12,14 @@ class MovieRecommender:
 	def __init__(self):
 		self.df = None
 		self.cosine_sim = None
-	
+
 	def load_data(self, file_credits, file_movies):
 		df1 = pd.read_csv(file_credits)
 		df2 = pd.read_csv(file_movies)
 		df1.columns = ['id', 'title', 'cast', 'crew']
 		self.df = df2.merge(df1[['id', 'cast', 'crew']], on='id')
-		return self.df		
-
+		return self.df
+	
 	def calculate_content_cosine_sim(self):
 		self.df['overview'] = self.df['overview'].fillna('')
 
@@ -37,7 +37,31 @@ class MovieRecommender:
 
 		self.cosine_sim = cosine_similarity(count_matrix, count_matrix)
 		return self.cosine_sim
+	
+	def calculate_director_cosine_sim(self):
+		self.preprocessing_director()
 
+		count = CountVectorizer()
+		count_matrix = count.fit_transform(self.df['soup'])
+
+		self.cosine_sim = cosine_similarity(count_matrix, count_matrix)
+		return self.cosine_sim
+
+	def preprocessing_director(self):
+		features = ['crew']
+		# 문자열로된 값을 리스트로 변환
+		for feature in features:
+			self.df[feature] = self.df[feature].apply(literal_eval)
+
+		self.df['director'] = self.df['crew'].apply(self._get_director)
+
+		features = ['director']
+		for feature in features:
+			self.df[feature] = self.df[feature].apply(self._clean_data)
+		
+		self.df['soup'] = self.df.apply(self._create_soup, axis=1)
+		return self.df
+	
 	def preprocessing_etc(self):
 		features = ['genres', 'keywords', 'cast', 'crew']
 		# 문자열로된 값을 리스트로 변환
@@ -49,38 +73,14 @@ class MovieRecommender:
 		features = ['genres', 'keywords', 'cast']
 		for feature in features:
 			self.df[feature] = self.df[feature].apply(self._get_list)
-			
+		
 		features = ['genres', 'keywords', 'cast', 'director']
 		for feature in features:
 			self.df[feature] = self.df[feature].apply(self._clean_data)
-
+		
 		self.df['soup'] = self.df.apply(self._create_soup, axis=1)
 		return self.df
-	
-	def calculate_director_cosine_sim(self):
-		self.preprocessing_director()
 
-		count = CountVectorizer()
-		count_matrix = count.fit_transform(self.df['soup'])
-
-		self.cosine_sim = cosine_similarity(count_matrix, count_matrix)
-		return self.cosine_sim
-
-	def preprocessing_director(self):		
-		features = ['crew']
-		# 문자열로된 값을 리스트로 변환
-		for feature in features:
-			self.df[feature] = self.df[feature].apply(literal_eval)
-
-		self.df['director'] = self.df['crew'].apply(self._get_director)
-
-		features = ['director']
-		for feature in features:
-			self.df[feature] = self.df[feature].apply(self._clean_data)
-
-		self.df['soup'] = self.df.apply(self._create_soup, axis=1)
-		return self.df
-	
 	def save_model(self, file_name):
 		data = {
 			'cosine_sim' : self.cosine_sim,
@@ -92,7 +92,7 @@ class MovieRecommender:
 		try:
 			data = jl.load(file_name)
 			self.cosine_sim, self.df = data['cosine_sim'], data['df']
-		except Exception as e:
+		except:
 			self.cosine_sim, self.df = None, None
 	
 	def get_recommendations(self, title):
@@ -103,11 +103,11 @@ class MovieRecommender:
 		sim_scores = sim_scores[1:11]
 		movie_indices = [i[0] for i in sim_scores]
 		return self.df['title'].iloc[movie_indices]
-
-	def get_recommendations_movies(self, type: str, title: str):
+	
+	def get_recommendations_movies(self, type:str, title:str):
 		if self.df is None:
 			try:
-					self.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+				self.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
 			except:
 				return []
 
@@ -124,14 +124,11 @@ class MovieRecommender:
 				self.calculate_etc_cosine_sim()
 				self.save_model('movie_model_etc.pkl')
 			return self.get_recommendations(title)
-		
-		# 감독 기반 추천
 		elif type == 'director':
 			if self.cosine_sim is None:
 				self.calculate_director_cosine_sim()
 				self.save_model('movie_model_director.pkl')
 			return self.get_recommendations(title)
-		
 		else:
 			return []
 
@@ -139,14 +136,14 @@ class MovieRecommender:
 		if isinstance(x, list):
 			names = [i['name'] for i in x]
 			if len(names) > 3:
-				names = names[:3] # 0번지부터 3번지 전까지
+				names = names[:3] #0번지부터 3번지 전까지 
 			return names
 		return []
 	def _clean_data(self, x):
 		if isinstance(x, list):
 			return [str.lower(i.replace(' ', '')) for i in x]
 		elif isinstance(x, str):
-			return [str.lower(x.replace(' ', ''))]
+			return str.lower(x.replace(' ', ''))
 		else:
 			return ''
 	def _get_director(self, x):
@@ -155,7 +152,7 @@ class MovieRecommender:
 				return crew['name']
 		return np.nan
 	def _create_soup(self, x):
-		return f'{' '.join(x['keywords'])} {' '.join(x['keywords'])} {' '.join(x['genres'])} {x['director']}'
+		return f'{' '.join(x['keywords'])} {' '.join(x['cast'])} {' '.join(x['genres'])} {x['director']}'
 
 def get_movies():
 	df = pd.read_csv('tmdb_5000_credits.csv')
@@ -164,9 +161,16 @@ def get_movies():
 
 if __name__ == '__main__':
 	recommender = MovieRecommender()
+	# 피클 만드는 방법
+	# 1~3을 주석 해제, 나머지 주석. 실행하면 pkl파일 생성
+	# 1.
 	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# 2.
 	# recommender.calculate_content_cosine_sim()
+	# 3.
 	# recommender.save_model('movie_model_content.pkl')
+
+	# python movie_learning.py
 	# recommender.load_model('movie_model_content.pkl')
 	# print(recommender.get_recommendations_movies('content', 'Avatar'))
 
@@ -179,8 +183,6 @@ if __name__ == '__main__':
 	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
 	# recommender.calculate_director_cosine_sim()
 	# recommender.save_model('movie_model_director.pkl')
-	# recommender.load_model('movie_model_director.pkl')
-	# print(recommender.get_recommendations_movies('director', 'Avatar'))
-
+	recommender.load_model('movie_model_director.pkl')
+	print(recommender.get_recommendations_movies('director', 'Avatar'))
 	pass
-	
