@@ -106,7 +106,6 @@ def predict_from_upload_file(
 		'T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
 		'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot'
 	]
-
 	return class_names[select_idx]
 
 
@@ -117,7 +116,7 @@ if __name__ == '__main__':
 	# print("학습 완료!")
 	# 로컬에서 테스타할 이미지를 생성
 	(X_train, y_train), (_, _) = datasets.fashion_mnist.load_data()
-	cv2.imwrite('test.png', X_train[0])
+	cv2.imwrite('trest.png', X_train[0])
 	with open('test.png', 'rb') as f:
 		data = f.read()
 	print(np.argmax(predict_from_upload_file(data)))
