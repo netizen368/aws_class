@@ -23,24 +23,27 @@
 		const movieList = document.querySelector('#movieList')
 		const btn = document.querySelector('#btn')
 		const input = document.querySelector('[name=movie]')
-		const typeEl = document.querySelector('[name=type]') 
+		const typeEl = document.querySelector('[name=type]')
 		
 		async function btnClick(){
 			btn.disabled = true;
 			const title = input.value.trim()
-			const type = typeEl.value
+			const type = typeEl.value 
 			
 			try{
 				if(!title){
 					alert("제목을 입력하세요.")
 					throw new Error();
 				}
-				const response = await fetch(`/api/v1/movies/recommend?title=${title}&type=${type}`)
+				const response 
+					= await fetch(`/api/v1/movies/recommend?title=${title}&type=${type}`)
 				if(!response.ok){
-					resultDiv.innerHTML = '<li>연결 실패</li>' 
+					resultDiv.innerHTML = '<li>연결 실패</li>'
 					throw new Error();
 				}
+				
 				const result = await response.json()
+				console.log(result)
 				let str = ''
 				result.forEach(m=>{
 					str += `<li>${m.title}</li>`
@@ -51,6 +54,7 @@
 			}finally{
 				btn.disabled = false;
 			}
+			
 		}
 		
 		async function getMovieList(){
@@ -58,7 +62,7 @@
 				const response = await fetch('/api/v1/movies');
 				
 				if(!response.ok){
-					//요청 실패 
+					//요청 실패
 					resultDiv.innerHTML = '<li>요청 실패</li>'
 					return;
 				}

@@ -27,7 +27,7 @@
 			btn.disabled = true
 			
 			try{
-				const response = await fetch('/api/v1/fashion',{
+				const response = await fetch('/api/v1/fashion/predict',{
 					method : 'post',
 					body : formData
 				})
