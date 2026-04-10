@@ -3,25 +3,25 @@ import './App.css';
 
 function App() {
   async function test(msg){
-    
+
     const response = await fetch(`/api/v1/test?msg=${msg}`)
     
     if(!response.ok){
       console.log('연결 실패')
       return;
     }
-    
-    const res = await response.text()
-    console.log(res)
+
+    const res = await response.json()
+    console.log(res.msg)
 
   }
   test('hi')
 
   async function testPost(msg){
-    
+
     const response = await fetch(`/api/v1/test`,{
       method : 'post',
-      headers : {
+      headers :{
         'Content-type' : 'application/json'
       },
       body : JSON.stringify({'msg' : msg})
@@ -31,7 +31,7 @@ function App() {
       console.log('연결 실패')
       return;
     }
-    
+
     const res = await response.text()
     console.log(res)
 
@@ -53,6 +53,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
