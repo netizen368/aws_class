@@ -36,7 +36,7 @@ def load_image_dataset(root_path:str, width:int, height:int):
 	images = images.astype('float32') / 255.0
 	return images, labels
 
-def train_model_save_model(X, y, file_name:str = 'mnist_model.pkl'):
+def train_model_save_model(X, y, file_name:str = 'model/mnist_model.pkl'):
 	# 데이터를 섞음
 	X, y = shuffle(X,y)
 	# 모델선정
@@ -49,7 +49,7 @@ def train_model_save_model(X, y, file_name:str = 'mnist_model.pkl'):
 	}
 	jl.dump(model_data, file_name)
 
-def load_model_predict(image:str, width:int, height:int, file_name:str = 'mnist_model.pkl'):
+def load_model_predict(image:str, width:int, height:int, file_name:str = 'model/mnist_model.pkl'):
 	mode_data = jl.load(file_name)
 	model = mode_data['model']
 
@@ -71,7 +71,7 @@ def download_mnist(root_path):
 		os.makedirs(os.path.join(root_path, label), exist_ok=True)
 		cv2.imwrite(os.path.join(root_path, label, f'img_{i}.png'), image)
 
-def predict_from_upload_file(img, width:int, height:int, file_name:str = 'mnist_model.pkl'):
+def predict_from_upload_file(img, width:int, height:int, file_name:str = 'model/mnist_model.pkl'):
 
 	mode_data = jl.load(file_name)
 	model = mode_data['model']

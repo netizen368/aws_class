@@ -107,7 +107,7 @@ class MovieRecommender:
 	def get_recommendations_movies(self, type:str, title:str):
 		if self.df is None:
 			try:
-				self.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+				self.load_data('csv/tmdb_5000_credits.csv', 'csv/tmdb_5000_movies.csv')
 			except:
 				return []
 
@@ -115,19 +115,19 @@ class MovieRecommender:
 		if type == 'content':
 			if self.cosine_sim is None:
 				self.calculate_content_cosine_sim()
-				self.save_model('movie_model_content.pkl')
+				self.save_model('model/movie_model_content.pkl')
 			return self.get_recommendations(title)
 
 		# 감독, 장르, 배우, 키워드 추천
 		elif type == 'etc':
 			if self.cosine_sim is None:
 				self.calculate_etc_cosine_sim()
-				self.save_model('movie_model_etc.pkl')
+				self.save_model('model/movie_model_etc.pkl')
 			return self.get_recommendations(title)
 		elif type == 'director':
 			if self.cosine_sim is None:
 				self.calculate_director_cosine_sim()
-				self.save_model('movie_model_director.pkl')
+				self.save_model('model/movie_model_director.pkl')
 			return self.get_recommendations(title)
 		else:
 			return []
@@ -155,7 +155,7 @@ class MovieRecommender:
 		return f'{' '.join(x['keywords'])} {' '.join(x['cast'])} {' '.join(x['genres'])} {x['director']}'
 
 def get_movies():
-	df = pd.read_csv('tmdb_5000_credits.csv')
+	df = pd.read_csv('csv/tmdb_5000_credits.csv')
 	df = df[['title']].dropna()
 	return df[['title']].to_dict(orient='records')
 
@@ -164,25 +164,25 @@ if __name__ == '__main__':
 	# 피클 만드는 방법
 	# 1~3을 주석 해제, 나머지 주석. 실행하면 pkl파일 생성
 	# 1.
-	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# recommender.load_data('csv/tmdb_5000_credits.csv', 'csv/tmdb_5000_movies.csv')
 	# 2.
 	# recommender.calculate_content_cosine_sim()
 	# 3.
-	# recommender.save_model('movie_model_content.pkl')
+	# recommender.save_model('model/movie_model_content.pkl')
 
 	# python movie_learning.py
-	# recommender.load_model('movie_model_content.pkl')
+	# recommender.load_model('model/movie_model_content.pkl')
 	# print(recommender.get_recommendations_movies('content', 'Avatar'))
 
-	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# recommender.load_data('csv/tmdb_5000_credits.csv', 'csv/tmdb_5000_movies.csv')
 	# recommender.calculate_etc_cosine_sim()
-	# recommender.save_model('movie_model_etc.pkl')
-	# recommender.load_model('movie_model_etc.pkl')
+	# recommender.save_model('model/movie_model_etc.pkl')
+	# recommender.load_model('model/movie_model_etc.pkl')
 	# print(recommender.get_recommendations_movies('etc', 'Avatar'))
 
-	# recommender.load_data('tmdb_5000_credits.csv', 'tmdb_5000_movies.csv')
+	# recommender.load_data('csv/tmdb_5000_credits.csv', 'csv/tmdb_5000_movies.csv')
 	# recommender.calculate_director_cosine_sim()
-	# recommender.save_model('movie_model_director.pkl')
-	recommender.load_model('movie_model_director.pkl')
+	# recommender.save_model('model/movie_model_director.pkl')
+	# recommender.load_model('model/movie_model_director.pkl')
 	print(recommender.get_recommendations_movies('director', 'Avatar'))
 	pass
