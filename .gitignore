@@ -23,16 +23,14 @@
 hs_err_pid*
 replay_pid*
 
-java_kjn/.gitignore
+java_jik/.gitignore
 .classpath
 .project
 
 .ipynb_checkpoints/
+
+*.keras
+*.model
+*.h5
+*.pkl
 __pycache__/
-**/__pycache__/
-.settings/
-bin/
-.vscode/
-python/day05/*.csv
-python/day10(ml)/*.csv
-python/**/*.html

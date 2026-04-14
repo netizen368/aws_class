@@ -1,6 +1,6 @@
 import ChatBot from "./ChatBot";
 import Main from "./Main";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   async function test(msg){
@@ -38,14 +38,14 @@ function App() {
 
   }
   testPost('hi')
-  return(
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" exact element={<Main/>} />
-					<Route path="/chat" element={<ChatBot/>} />
-				</Routes>
-			</BrowserRouter>
-		);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" exact element={<Main/>} />
+        <Route path="/chat" element={<ChatBot/>} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
