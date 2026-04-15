@@ -1,5 +1,6 @@
 import { useState } from "react"
-import {sendData} from "./Ask"
+import {sendData} from "./AI"
+import { Link } from "react-router-dom"
 
 function Ask(){
 
@@ -15,7 +16,7 @@ function Ask(){
 			return
 		}
 
-		sendData(form, (datas)=>{
+		sendData('/api/v1/ai/ask', form, 'json', (datas)=>{
 			setResult(datas.message)
 			setForm({...form, prompt : ''})
 		})
@@ -28,6 +29,7 @@ function Ask(){
 	
 	return(
 		<div>
+			<Link to="/list">뒤로가기</Link>
 			<h1>기본 ai 테스트 페이지</h1>
 			<form style={{display:'flex'}} onSubmit={formSubmit}>
 				<textarea name="prompt" rows={5} cols={30} 
