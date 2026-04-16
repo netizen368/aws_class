@@ -12,11 +12,14 @@ const sendData = async (url, params, type, callbackFunc)=>{
 		
 		const result = type === 'json' ? await response.json() : await response.text()
 		// 콜백 함수가 있으면 마지막에 콜백 함수를 실행
-		if(callbackFunc)
+		if(callbackFunc){
 			callbackFunc(result)
+		}
 	}catch(e){
 		console.error(e)
 	}
 }
 
 export {sendData}
+
+

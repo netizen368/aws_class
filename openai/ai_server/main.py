@@ -62,6 +62,7 @@ def ad_copy(
 	temp:float = Query(0.8, ge=0.0, le=1.0, description='창의성 온도(0~1)'),
 	count:int = Query(50, description='광고문구 글자제한'),
 ):
+	# return{'message' : "AI 서버 연결 성공!"}
 	prompt = f"""
 	너는 창의적인 카피라이터야. 
 	{product}의 광고 문구를 {target}을 타겟으로 맞춰 {count}자 내외로 작성해줘.
@@ -77,7 +78,7 @@ def ad_copy(
 			top_k=20,
     ),
 	)
-	return { 'answer' : response.text}
+	return { 'message' : response.text}
 
 class Summary(BaseModel):
 	text : str
@@ -86,7 +87,7 @@ class Summary(BaseModel):
 
 @app.post("/summarize")
 async def summarize(summary:Summary):
-
+	return{'message' : "AI 서버 연결 성공!"}
 	prompt = f"""
 	너는 복잡한 정보를 명료하게 정리하는 전문 편집자야.
 	아래 텍스트를 분석해서 {summary.target_lan}로 요약해줘	
@@ -117,7 +118,7 @@ async def summarize(summary:Summary):
     contents=types.Part.from_text(text=prompt),
     config=types.GenerateContentConfig(temperature=0.2),
 	)
-	return { 'answer' : response.text}
+	return { 'message' : response.text}
 
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)
