@@ -22,10 +22,13 @@ public class AIController {
 	private final WebClient webClient;
 	
 	@GetMapping("/ask")
-	public String ask(@RequestParam("prompt")String prompt) {
+	public String ask(
+			@RequestParam("prompt")String prompt,
+			@RequestParam("endpoint")String endpoint
+			) {
 		String result = webClient.get()
 		  .uri(uriBuilder-> uriBuilder
-			  .path("/ask")
+			  .path(endpoint)
 			  .queryParam("prompt", prompt)
 	  		  .build())
 	      .retrieve()
@@ -74,7 +77,7 @@ public class AIController {
 	}
 	
 	@PostMapping("/summarize")
-	public ResponseEntity<String> summarize(@RequestBody Summarize dto){
+	public String summarize(@RequestBody Summarize dto){
 		String result = 
 				webClient.post()
 					.uri("/summarize")
@@ -83,17 +86,10 @@ public class AIController {
 					.bodyToMono(String.class)
 					.block();
 				
-		return ResponseEntity.ok(result);
+		return result;
 	}
-}
-@Data
-class SummarizeDTO{
-	private String text;
-    private String target_lan;
-    private int max_sentence;
 }
 record Summarize(
 	    String text,
 	    String target_lan,
-	    int max_sentence
-	) {}
+	    int max_sentence) {}

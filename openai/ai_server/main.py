@@ -4,15 +4,23 @@ from fastapi import FastAPI, Query
 from pydantic import BaseModel
 import uvicorn
 import os
+import sample as sp
 
 app = FastAPI()
 
 # gemini-2.5-flash-lite
+# "gemini-3.1-flash-lite-preview"
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
+GOOGLE_SUMMARY_MODEL_NAME = "gemini-3.1-flash-lite-preview"
+# GOOGLE_MODEL_NAME = "gemini-3.1-flash-lite-preview"
+SYSTEM_INSTRUCTION= "당신은 내 담당 영양사야. 내가 먹은 음식들을 토대로 식단을 관리해줘."
+MAX_HISTORY_SIZE = 4
+
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
-
+chat_history = sp.chat_history if sp.chat_history else []
+db = sp.db if sp.db else {"history" : [], "summary" : ""}
 
 @app.get("/ask")
 async def ask_gemini(prompt: str):
@@ -25,6 +33,93 @@ async def ask_gemini(prompt: str):
 		"message": response.text
 	}
 
+# 최근 N개 대화를 이용한 챗봇 => N개 이전 대화는 날라감
+@app.get("/chatbot")
+async def chatbot_gemini(prompt: str):
+	global chat_history
+	chat_history.append(types.Content(
+	role="user", 
+	parts=[types.Part.from_text(text=prompt)]
+	))
+
+	response = client.models.generate_content(
+		model= GOOGLE_MODEL_NAME,
+		contents= chat_history, # types.Part.from_text(text=prompt),
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	model_text = response.text
+	# 대화 기록을 저장(추가)
+	# 사용자 질문을 저장
+	chat_history.append(types.Content(
+		role="user", 
+		parts=[types.Part.from_text(text=prompt)]
+		))
+	chat_history.append(types.Content(
+		role="model", 
+		parts=[types.Part.from_text(text=model_text)]
+		))
+
+
+	# 대화 기록이 최대 저장수를 넘어가면 앞부분 제거
+	if(len(chat_history) >= MAX_HISTORY_SIZE):
+		chat_history = chat_history[-10:] # 뒤에서 10개 추출
+
+	# 답변을 리턴
+	return {
+		"message": model_text
+	}
+async def update_summary():
+	to_summarize = db["history"][:-2] # 마지막 2개 제외
+
+	prompt = f"""
+	기존 요약 : {db['summary']}
+	추가된 대화 : {to_summarize}
+
+	위 내용을 바탕으로 지금까지의 대화 맥락을 한 문장으로 업데이트해줘.
+	사용자의 주요 관심사와 언급된 핵심 사실을 포함해줘.
+	"""
+
+	response = client.models.generate_content(
+		model= GOOGLE_SUMMARY_MODEL_NAME,
+		contents=types.Part.from_text(text=prompt),
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	print(response.text)
+	db["summary"] = response.text
+
+@app.get("/summary-chatbot")
+async def chatbot_gemini(prompt:str):
+	db["history"].append(types.Content(
+		role="user", 
+		parts=[types.Part.from_text(text=prompt)]
+	))
+	response = client.models.generate_content(
+		model= GOOGLE_MODEL_NAME,
+		contents= ["history"],
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	model_text = response.text
+	db["history"].append(types.Content(
+		role="model", 
+		parts=[types.Part.from_text(text=model_text)]
+	))
+	if(len(chat_history) >= MAX_HISTORY_SIZE):
+		await update_summary() 
+
+	# 답변을 리턴
+	return {
+		"message": model_text,
+		"summary" : db["summary"]
+	}
 @app.get("/translate")
 async def translate(
 	text:str = Query(..., description='번역할 문장'),
@@ -87,7 +182,11 @@ class Summary(BaseModel):
 
 @app.post("/summarize")
 async def summarize(summary:Summary):
-	return{'message' : "AI 서버 연결 성공!"}
+	# return {"message" : """
+	# - 요약 : 문장1. 문장2. 문장3
+	# ======================
+	# - 키워드 : #AI국회, #의정지원플랫폼, #생성형AI"
+	# """}
 	prompt = f"""
 	너는 복잡한 정보를 명료하게 정리하는 전문 편집자야.
 	아래 텍스트를 분석해서 {summary.target_lan}로 요약해줘	
@@ -102,6 +201,7 @@ async def summarize(summary:Summary):
 
 	[출력형식]
 	- 요약 : (내용)
+	======================
 	- 키워드 : #키워드1, #키워드2, #키워드3
 	"""
 	"""
@@ -122,3 +222,5 @@ async def summarize(summary:Summary):
 
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)
+
+	
