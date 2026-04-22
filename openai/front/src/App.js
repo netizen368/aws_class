@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Translate from "./Translate";
 import AdCopy from "./AdCopy";
 import Summarize from "./Summarize";
+import RagChatbot from "./RagChatbot";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/translate" exact element={<Translate/>} />
         <Route path="/ad-copy" exact element={<AdCopy/>} />
         <Route path="/summarize" exact element={<Summarize/>} />
+        <Route path="/rag-chatbot" exact element={<RagChatbot/>} /> 
       </Routes>
     </BrowserRouter>
 

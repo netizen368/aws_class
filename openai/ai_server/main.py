@@ -1,10 +1,16 @@
 from google import genai
 from google.genai import types
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, File, UploadFile
 from pydantic import BaseModel
+from chromadb.config import Settings
 import uvicorn
 import os
 import sample as sp
+import sys
+import pypdf
+import time
+import chromadb
+import io
 
 app = FastAPI()
 
@@ -13,14 +19,27 @@ app = FastAPI()
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
 GOOGLE_SUMMARY_MODEL_NAME = "gemini-3.1-flash-lite-preview"
+GOOGLE_EMBED_MODEL_NAME = "gemini-embedding-2-preview"
 # GOOGLE_MODEL_NAME = "gemini-3.1-flash-lite-preview"
 SYSTEM_INSTRUCTION= "당신은 내 담당 영양사야. 내가 먹은 음식들을 토대로 식단을 관리해줘."
-MAX_HISTORY_SIZE = 4
+MAX_HISTORY_SIZE=4
+CHROMA_PATH = './knowledge_base'
 
 client = genai.Client(api_key=GOOGLE_API_KEY)
 
 chat_history = sp.chat_history if sp.chat_history else []
-db = sp.db if sp.db else {"history" : [], "summary" : ""}
+db =  sp.db if sp.db else {	"history" : [], "summary" : ""}
+
+chroma_client = chromadb.PersistentClient(
+	path=CHROMA_PATH,
+	settings=Settings(
+		# 우리가 사용한 데이터를 크로마db 본사 서버에 익명으로 보낼건지 말지
+		anonymized_telemetry=False, 
+		# 명령어로 db 내용을 초기화 권한을 부여할건지 말건지. 배포할 땐 False
+		allow_reset=True)
+)
+collection = chroma_client.get_or_create_collection(name="class_knowledge")
+
 
 @app.get("/ask")
 async def ask_gemini(prompt: str):
@@ -33,98 +52,12 @@ async def ask_gemini(prompt: str):
 		"message": response.text
 	}
 
-# 최근 N개 대화를 이용한 챗봇 => N개 이전 대화는 날라감
-@app.get("/chatbot")
-async def chatbot_gemini(prompt: str):
-	global chat_history
-	chat_history.append(types.Content(
-	role="user", 
-	parts=[types.Part.from_text(text=prompt)]
-	))
-
-	response = client.models.generate_content(
-		model= GOOGLE_MODEL_NAME,
-		contents= chat_history, # types.Part.from_text(text=prompt),
-		config=types.GenerateContentConfig(
-			temperature=0.7,
-			system_instruction=SYSTEM_INSTRUCTION
-		),
-	)
-	model_text = response.text
-	# 대화 기록을 저장(추가)
-	# 사용자 질문을 저장
-	chat_history.append(types.Content(
-		role="user", 
-		parts=[types.Part.from_text(text=prompt)]
-		))
-	chat_history.append(types.Content(
-		role="model", 
-		parts=[types.Part.from_text(text=model_text)]
-		))
-
-
-	# 대화 기록이 최대 저장수를 넘어가면 앞부분 제거
-	if(len(chat_history) >= MAX_HISTORY_SIZE):
-		chat_history = chat_history[-10:] # 뒤에서 10개 추출
-
-	# 답변을 리턴
-	return {
-		"message": model_text
-	}
-async def update_summary():
-	to_summarize = db["history"][:-2] # 마지막 2개 제외
-
-	prompt = f"""
-	기존 요약 : {db['summary']}
-	추가된 대화 : {to_summarize}
-
-	위 내용을 바탕으로 지금까지의 대화 맥락을 한 문장으로 업데이트해줘.
-	사용자의 주요 관심사와 언급된 핵심 사실을 포함해줘.
-	"""
-
-	response = client.models.generate_content(
-		model= GOOGLE_SUMMARY_MODEL_NAME,
-		contents=types.Part.from_text(text=prompt),
-		config=types.GenerateContentConfig(
-			temperature=0.7,
-			system_instruction=SYSTEM_INSTRUCTION
-		),
-	)
-	print(response.text)
-	db["summary"] = response.text
-
-@app.get("/summary-chatbot")
-async def chatbot_gemini(prompt:str):
-	db["history"].append(types.Content(
-		role="user", 
-		parts=[types.Part.from_text(text=prompt)]
-	))
-	response = client.models.generate_content(
-		model= GOOGLE_MODEL_NAME,
-		contents= ["history"],
-		config=types.GenerateContentConfig(
-			temperature=0.7,
-			system_instruction=SYSTEM_INSTRUCTION
-		),
-	)
-	model_text = response.text
-	db["history"].append(types.Content(
-		role="model", 
-		parts=[types.Part.from_text(text=model_text)]
-	))
-	if(len(chat_history) >= MAX_HISTORY_SIZE):
-		await update_summary() 
-
-	# 답변을 리턴
-	return {
-		"message": model_text,
-		"summary" : db["summary"]
-	}
 @app.get("/translate")
 async def translate(
 	text:str = Query(..., description='번역할 문장'),
 	style:str =  Query("formal", description='말투: formal(격식), casual(반말), business(비즈니스)')
 ):
+	
 	# 좋은 번역을 위하여 번역 문장을 좋은 프롬프트로 변환
 	# I am a boy => 나는 소년이다
 	# f : 문자열 안에 변수를 쉽게 넣을 때 사용
@@ -157,7 +90,7 @@ def ad_copy(
 	temp:float = Query(0.8, ge=0.0, le=1.0, description='창의성 온도(0~1)'),
 	count:int = Query(50, description='광고문구 글자제한'),
 ):
-	# return{'message' : "AI 서버 연결 성공!"}
+
 	prompt = f"""
 	너는 창의적인 카피라이터야. 
 	{product}의 광고 문구를 {target}을 타겟으로 맞춰 {count}자 내외로 작성해줘.
@@ -182,11 +115,7 @@ class Summary(BaseModel):
 
 @app.post("/summarize")
 async def summarize(summary:Summary):
-	# return {"message" : """
-	# - 요약 : 문장1. 문장2. 문장3
-	# ======================
-	# - 키워드 : #AI국회, #의정지원플랫폼, #생성형AI"
-	# """}
+	
 	prompt = f"""
 	너는 복잡한 정보를 명료하게 정리하는 전문 편집자야.
 	아래 텍스트를 분석해서 {summary.target_lan}로 요약해줘	
@@ -220,7 +149,191 @@ async def summarize(summary:Summary):
 	)
 	return { 'message' : response.text}
 
+# 최근 N개 대화를 이용한 챗봇 => N개 이전 대화는 날라감
+@app.get("/chatbot")
+async def chatbot_gemini(prompt: str):
+	global chat_history
+	chat_history.append(types.Content(
+		role="user", 
+		parts=[types.Part.from_text(text=prompt)]
+		))
+
+	response = client.models.generate_content(
+		model= GOOGLE_MODEL_NAME,
+		contents=chat_history, #types.Part.from_text(text=prompt),
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	model_text = response.text
+	# 대화 기록을 저장(추가)
+	# 사용자 질문을 저장
+	chat_history.append(types.Content(
+		role="user", 
+		parts=[types.Part.from_text(text=prompt)]
+		))
+	chat_history.append(types.Content(
+		role="model", 
+		parts=[types.Part.from_text(text=model_text)]
+		))
+
+	# 대화 기록이 최대 저장수를 넘어가면 앞부분 제거
+	if(len(chat_history) >= MAX_HISTORY_SIZE):
+
+		chat_history = chat_history[-10:] # 뒤에서 10개 추출
+
+	# 답변을 리턴
+	return {
+		"message": model_text
+	}
+
+async def update_summary():
+	to_summarize = db["history"][:-2] #마지막 2개 제외 
+
+	prompt = f"""
+	기존 요약 : {db['summary']}
+	추가된 대화 : {to_summarize}
+
+	위 내용을 바탕으로 지금가지의 대화 맥락을 한 문장으로 업데이트해줘.
+	사용자의 주요 관심사와 언급된 핵심 사실을 포함해줘.
+	"""
+
+	response = client.models.generate_content(
+    model=GOOGLE_SUMMARY_MODEL_NAME,
+    contents=types.Part.from_text(text=prompt),
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	db["summary"] = response.text
+
+@app.get("/summary-chatbot")
+async def chatbot_gemini(prompt: str):
+	
+	db["history"].append(types.Content(	role="user", parts=[types.Part.from_text(text=prompt)]))
+
+	response = client.models.generate_content(
+		model= GOOGLE_MODEL_NAME,
+		contents=db["history"], 
+		config=types.GenerateContentConfig(
+			temperature=0.7,
+			system_instruction=SYSTEM_INSTRUCTION
+		),
+	)
+	model_text = response.text
+	db["history"].append(types.Content(	role="model", parts=[types.Part.from_text(text=model_text)]	))
+
+	if(len(chat_history) >= MAX_HISTORY_SIZE):
+		await update_summary()
+	
+	# 답변을 리턴
+	return {
+		"message": model_text,
+		"summary": db["summary"]
+	}
+
+
+def log(text:str):
+	print("-"*50)
+	print(text)
+	print("-"*50)
+	sys.stdout.flush()
+
+async def ingest_pdf(file:UploadFile, size : int):
+	log("지식 학습 시작")
+
+	try:
+		content = await file.read()
+		pdf_reader = pypdf.PdfReader(io.BytesIO(content))
+		texts = [page.extract_text() or "" for page in pdf_reader.pages]
+		full_text = "".join(texts)
+
+		if not full_text.strip():
+			log("PDF에서 읽어올 글자가 없습니다.")
+		
+		chunks = [full_text[i:i+size] for i in range(0, len(full_text), size)]
+
+		log("[분할 완료]")
+		embeddings = []
+		for chunk in chunks:
+			embed_res = client.models.embed_content(
+				model=GOOGLE_EMBED_MODEL_NAME,
+				contents=chunk
+			)
+			embeddings.append(embed_res.embeddings[0].values)
+		log("[임베딩 완료]")
+		
+		
+		collection.add(
+			# id를 "파일명_숫자_시간정수"
+			ids=[f"{file.filename}_{i}_{int(time.time())}" for i in range(len(chunks))],
+			documents=chunks,
+			embeddings=embeddings,
+			metadatas=[{"source" : file.filename} for _ in chunks]
+		)
+		log("저장 완료")
+	except Exception as e:
+		# log(f"에러발생 : {e}")
+		raise Exception(e)
+
+# pdf를 주면 임베딩해서 저장
+@app.post("/ingest-pdf")
+async def ingest_pdf_get(file:UploadFile = File(...)):
+	# print(file.filename)
+	# return {"message" : "ai 연결성공"}
+	try:
+		await ingest_pdf(file, 100)
+		return { "message" : "규정집이 등록 됐습니다."}
+	except Exception as e:
+		log(f"에러발생 : {e}")
+		return { "message" : "규정집 등록에 실패했습니다."}
+
+def rag_ask(prompt : str):
+	if collection.count() == 0:
+		log("학습된 데이터가 없습니다. PDF를 등록해주세요.")
+		return
+	
+	try:
+		log(f"질문 : {prompt}")
+		embed_res = client.models.embed_content(
+			model=GOOGLE_EMBED_MODEL_NAME,
+			contents=[prompt]
+		)
+		embedding = embed_res.embeddings[0].values
+
+		results = collection.query(
+			query_embeddings=[embedding],
+			n_results=3 # 상위 몇개를 가져올지
+		)
+		# print(results)
+		context = "\n".join(results['documents'][0])
+		
+		send_prompt = f"""
+		[지식 데이터]를 참고하여 질문에 답해줘.
+		정보가 부족하면 추측하지 말고 솔직히 답해줘.
+		[지식 데이터] : {context}
+		질문 : {prompt}
+		답변 : 
+		"""
+		response = client.models.generate_content(
+			model=GOOGLE_MODEL_NAME,
+			contents=send_prompt,
+			config=types.GenerateContentConfig(temperature=0.1)
+		)
+		return {
+			"message" : response.text
+		}
+	except Exception as e:
+		log(f"예외 발생 : {e}")
+
+@app.get("/rag-chatbot")
+async def rag_chatbot(prompt:str=Query(...,description='질문')):
+	print(prompt)
+	return {"message" : "ai연결"}
+	result = rag_ask(prompt)
+	return {"message" : result}
+
 if __name__ == '__main__':
 	uvicorn.run('main:app',host='0.0.0.0', port=8000, reload=True)
-
-	

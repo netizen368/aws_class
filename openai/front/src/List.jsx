@@ -20,6 +20,9 @@ function List(){
 					<Link to={"/summarize"}>요약</Link>
 					{/* 컴포넌트명 Summarize */}
 				</li>
+				<li>
+					<Link to={"/rag-chatbot"}>Rag 챗봇</Link>
+				</li>
 			</ul>
 		</div>
 	)

@@ -81,7 +81,7 @@ function AdCopy(){
 					{
 						isLoading ? "입력한 내용을 토대로 광고 문구 생성중입니다...\n잠시만 기다려주세요..." : result
 					}
-				</pre>
+			</pre>
 		</div>
 	)
 }
